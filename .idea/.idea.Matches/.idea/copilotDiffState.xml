@@ -3,6 +3,32 @@
   <component name="CopilotDiffPersistence">
     <option name="pendingDiffs">
       <map>
+        <entry key="$PROJECT_DIR$/Assets/Scripts/Core/ILevel.cs">
+          <value>
+            <PendingDiffInfo>
+              <option name="filePath" value="$PROJECT_DIR$/Assets/Scripts/Core/ILevel.cs" />
+              <option name="updatedContent" value="namespace Core&#10;{&#10;    public interface ILevel&#10;    {&#10;        void Load();&#10;        void Unload();&#10;    }&#10;}" />
+            </PendingDiffInfo>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/Assets/Scripts/Core/Level.cs">
+          <value>
+            <PendingDiffInfo>
+              <option name="filePath" value="$PROJECT_DIR$/Assets/Scripts/Core/Level.cs" />
+              <option name="originalContent" value="&#10;" />
+              <option name="updatedContent" value="using UnityEngine;&#10;&#10;namespace Core&#10;{&#10;    public class Level : MonoBehaviour, ILevel&#10;    {&#10;        [SerializeField] private string levelName;&#10;        [SerializeField] private bool isLoaded;&#10;        &#10;        public string LevelName =&gt; levelName;&#10;        public bool IsLoaded =&gt; isLoaded;&#10;        &#10;        public virtual void Load()&#10;        {&#10;            if (!isLoaded)&#10;            {&#10;                OnLevelLoad();&#10;                isLoaded = true;&#10;                Debug.Log($&quot;Level {levelName} loaded.&quot;);&#10;            }&#10;        }&#10;        &#10;        public virtual void Unload()&#10;        {&#10;            if (isLoaded)&#10;            {&#10;                OnLevelUnload();&#10;                isLoaded = false;&#10;                Debug.Log($&quot;Level {levelName} unloaded.&quot;);&#10;            }&#10;        }&#10;        &#10;        // Override edilebilir metodlar&#10;        protected virtual void OnLevelLoad()&#10;        {&#10;            // Level yüklenirken yapılacak işlemler&#10;        }&#10;        &#10;        protected virtual void OnLevelUnload()&#10;        {&#10;            // Level boşaltılırken yapılacak işlemler&#10;        }&#10;        &#10;        private void Awake()&#10;        {&#10;            if (string.IsNullOrEmpty(levelName))&#10;            {&#10;                levelName = gameObject.name;&#10;            }&#10;        }&#10;    }&#10;}" />
+            </PendingDiffInfo>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/Assets/Scripts/Core/Managers/LevelManager.cs">
+          <value>
+            <PendingDiffInfo>
+              <option name="filePath" value="$PROJECT_DIR$/Assets/Scripts/Core/Managers/LevelManager.cs" />
+              <option name="originalContent" value="using System.Collections.Generic;&#10;using Core.Events.Level;&#10;using UnityEngine;&#10;&#10;namespace Core.Managers&#10;{&#10;    public class LevelManager : MManager&#10;    {&#10;        [SerializeField] private LevelsContainerSO levelsContainer;&#10;        private List&lt;Level&gt; levels =&gt; levelsContainer.Levels;&#10;        private Level CurrentLevel;&#10;        private int currentLevelIndex = 0;&#10;        public override void Initialize()&#10;        {&#10;            //Load from resources\level data\container&#10;            &#10;            &#10;        }&#10;        &#10;        public void StartLevel()&#10;        {&#10;            var currentLevel = levels[currentLevelIndex];&#10;            if (currentLevel == null)&#10;            {&#10;                return;&#10;            }&#10;            &#10;            ManagerContainer.EventManager.Publish(new LevelStartedEvent(){ Level =currentLevel});&#10;        }&#10;        &#10;        public void LoadLevel()&#10;        {&#10;            if(CurrentLevel == null)&#10;                return;&#10;            &#10;            CurrentLevel.Load();&#10;            &#10;            ManagerContainer.EventManager.Publish(new LevelLoadedEvent(){ Level = CurrentLevel });&#10;        }&#10;        &#10;        public void EndLevel()&#10;        {&#10;            if (CurrentLevel == null)&#10;                return;&#10;            &#10;            CurrentLevel.Unload();&#10;            &#10;            currentLevelIndex++;&#10;            if (currentLevelIndex &lt; levels.Count)&#10;            {&#10;                CurrentLevel = levels[currentLevelIndex];&#10;            }&#10;            else&#10;            {&#10;                Debug.Log(&quot;All levels completed.&quot;);&#10;            }&#10;        }&#10;        &#10;    }&#10;}&#10;" />
+              <option name="updatedContent" value="using System.Collections.Generic;&#10;using Core.Events.Level;&#10;using UnityEngine;&#10;&#10;namespace Core.Managers&#10;{&#10;    public class LevelManager : MManager&#10;    {&#10;        [SerializeField] private LevelsContainerSO levelsContainer;&#10;        private List&lt;Level&gt; levels =&gt; levelsContainer.Levels;&#10;        private Level CurrentLevel;&#10;        private int currentLevelIndex = 0;&#10;        public override void Initialize()&#10;        {&#10;            //Load from resources\level data\container&#10;&#10;&#10;        }&#10;        &#10;        public void StartLevel()&#10;        {&#10;            var currentLevel = levels[currentLevelIndex];&#10;            if (currentLevel == null)&#10;            {&#10;                return;&#10;            }&#10;            &#10;            ManagerContainer.EventManager.Publish(new LevelStartedEvent(){ Level =currentLevel});&#10;        }&#10;        &#10;        public void LoadLevel()&#10;        {&#10;            if(CurrentLevel == null)&#10;                return;&#10;&#10;            CurrentLevel.Load();&#10;&#10;            ManagerContainer.EventManager.Publish(new LevelLoadedEvent(){ Level = CurrentLevel });&#10;        }&#10;        &#10;        public void EndLevel()&#10;        {&#10;            if (CurrentLevel == null)&#10;                return;&#10;&#10;            CurrentLevel.Unload();&#10;&#10;            currentLevelIndex++;&#10;            if (currentLevelIndex &lt; levels.Count)&#10;            {&#10;                CurrentLevel = levels[currentLevelIndex];&#10;            }&#10;            else&#10;            {&#10;                Debug.Log(&quot;All levels completed.&quot;);&#10;            }&#10;        }&#10;        &#10;    }&#10;}" />
+            </PendingDiffInfo>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/Assets/Scripts/MiniGames/Match3/Cell.cs">
           <value>
             <PendingDiffInfo>
@@ -23,6 +49,20 @@
           <value>
             <PendingDiffInfo>
               <option name="filePath" value="$PROJECT_DIR$/Assets/Scripts/MiniGames/Match3/Piece.cs" />
+            </PendingDiffInfo>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/Assets/Scripts/Test/EventTester.cs">
+          <value>
+            <PendingDiffInfo>
+              <option name="filePath" value="$PROJECT_DIR$/Assets/Scripts/Test/EventTester.cs" />
+            </PendingDiffInfo>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/Assets/Scripts/Test/TestEventClass.cs">
+          <value>
+            <PendingDiffInfo>
+              <option name="filePath" value="$PROJECT_DIR$/Assets/Scripts/Test/TestEventClass.cs" />
             </PendingDiffInfo>
           </value>
         </entry>

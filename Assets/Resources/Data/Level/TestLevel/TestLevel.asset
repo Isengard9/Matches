@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ffa6f273c8741fdb16768d57bd9345e, type: 3}
   m_Name: TestLevel
   m_EditorClassIdentifier: 
-  isLoaded: 1
-  LevelPrefab: {fileID: 2118862053609170034, guid: 74fb64fcfcd56c04aa053ffd1a82e3ae, type: 3}
+  isLoaded: 0
+  LevelPrefab: {fileID: 6727726849596690652, guid: 74fb64fcfcd56c04aa053ffd1a82e3ae, type: 3}
   GridData: {fileID: 11400000, guid: 2aba40e5b2e8ede41b1b4412c2ed4284, type: 2}

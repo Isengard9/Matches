@@ -13,3 +13,30 @@ MonoBehaviour:
   m_Name: TestGridData
   m_EditorClassIdentifier: 
   GridSize: 5
+  serializableCells:
+    rows:
+    - Piece: {fileID: 11400000, guid: 4cbb979011549334f8e18fb965c07ff5, type: 2}
+    - Piece: {fileID: 11400000, guid: 0de791098b4e2e048ab2cc8ccc44d5f1, type: 2}
+    - Piece: {fileID: 11400000, guid: a702985522fae8f42b90a43338b18e33, type: 2}
+    - Piece: {fileID: 11400000, guid: 444dc95251a7cd54ba61473d333119ff, type: 2}
+    - Piece: {fileID: 11400000, guid: 5040e1f7c5de7d646aa3bb82f54f6e34, type: 2}
+    - Piece: {fileID: 11400000, guid: d38d4524a0bce614cbc5c0bacf21a542, type: 2}
+    - Piece: {fileID: 11400000, guid: 5fc84df84e1daac4a8cc2cad2c682d25, type: 2}
+    - Piece: {fileID: 11400000, guid: 5fc84df84e1daac4a8cc2cad2c682d25, type: 2}
+    - Piece: {fileID: 11400000, guid: 605041dc60540154585465edc44235fe, type: 2}
+    - Piece: {fileID: 11400000, guid: 444dc95251a7cd54ba61473d333119ff, type: 2}
+    - Piece: {fileID: 11400000, guid: 2339ef4c3588961469562a7db6c7c1df, type: 2}
+    - Piece: {fileID: 11400000, guid: 423acd3d770bb5844a12df80834dcd5e, type: 2}
+    - Piece: {fileID: 11400000, guid: 560da22b6fee71a4cb6f78b1ded4d4fc, type: 2}
+    - Piece: {fileID: 11400000, guid: 3cbc1619c7f418d4195da3d4147be8a3, type: 2}
+    - Piece: {fileID: 11400000, guid: 7eb318e47099276459ab812612cf9854, type: 2}
+    - Piece: {fileID: 11400000, guid: d38d4524a0bce614cbc5c0bacf21a542, type: 2}
+    - Piece: {fileID: 11400000, guid: 2339ef4c3588961469562a7db6c7c1df, type: 2}
+    - Piece: {fileID: 11400000, guid: 560da22b6fee71a4cb6f78b1ded4d4fc, type: 2}
+    - Piece: {fileID: 11400000, guid: d559d2a2995885a449ec88209a62023d, type: 2}
+    - Piece: {fileID: 11400000, guid: d559d2a2995885a449ec88209a62023d, type: 2}
+    - Piece: {fileID: 11400000, guid: 3cbc1619c7f418d4195da3d4147be8a3, type: 2}
+    - Piece: {fileID: 11400000, guid: a702985522fae8f42b90a43338b18e33, type: 2}
+    - Piece: {fileID: 11400000, guid: d38d4524a0bce614cbc5c0bacf21a542, type: 2}
+    - Piece: {fileID: 11400000, guid: 5fc84df84e1daac4a8cc2cad2c682d25, type: 2}
+    - Piece: {fileID: 11400000, guid: 5fc84df84e1daac4a8cc2cad2c682d25, type: 2}

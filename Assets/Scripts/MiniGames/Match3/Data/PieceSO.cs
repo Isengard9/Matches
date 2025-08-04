@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace MiniGames.Match3.Core
+namespace MiniGames.Match3.Data
 {
     public enum PieceType
     {
@@ -16,5 +16,6 @@ namespace MiniGames.Match3.Core
         public Sprite Sprite;
         public Color Color = Color.white;
         public PieceType Type = PieceType.Default;
+        
     }
 }

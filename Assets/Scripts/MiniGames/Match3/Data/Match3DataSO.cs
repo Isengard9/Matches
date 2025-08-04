@@ -8,8 +8,9 @@ namespace MiniGames.Match3.Data
     [CreateAssetMenu(fileName = "Match3 Data", menuName = "NC/Matches/Match3 Level Data", order = 0)]
     public class Match3DataSO : Level
     {
-        public GameObject LevelPrefab;
-        private GameObject createdLevel;
+        public Match3LevelController LevelPrefab;
+        private Match3LevelController createdLevel;
+        
         public GridData GridData;
 
         private void OnValidate()
@@ -17,7 +18,7 @@ namespace MiniGames.Match3.Data
             if(GridData != null)
                 return;
             
-            GridData = new GridData();
+            GridData = CreateInstance<GridData>();
         }
 
         public override void Load()
@@ -26,6 +27,7 @@ namespace MiniGames.Match3.Data
             if (LevelPrefab != null)
             {
                 createdLevel = Instantiate(LevelPrefab);
+                createdLevel.gridController.CreateGrid();
             }
             else
             {
@@ -37,13 +39,19 @@ namespace MiniGames.Match3.Data
             base.Unload();
             if (createdLevel != null)
             {
-                Destroy(createdLevel);
+                createdLevel.gridController.ClearExistingGrid();
+                Destroy(createdLevel.gameObject);
                 createdLevel = null;
             }
             else
             {
                 Debug.LogWarning("No level to unload in Match3DataSO.");
             }
+        }
+
+        private void OnDestroy()
+        {
+            Unload();
         }
     }
 }

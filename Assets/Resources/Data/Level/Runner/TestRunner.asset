@@ -9,9 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e29d938794c74968ace575a9e637f69b, type: 3}
-  m_Name: LevelsContainer
+  m_Script: {fileID: 11500000, guid: d8fd7de789ef483bac539f1ff196adb2, type: 3}
+  m_Name: TestRunner
   m_EditorClassIdentifier: 
-  Levels:
-  - {fileID: 11400000, guid: 3891ee8f91ad8a943b323424261f9eb1, type: 2}
-  - {fileID: 11400000, guid: 9c72cdc12977c8b4eb697f43f123f2f0, type: 2}
+  LevelName: 
+  Level: {fileID: 11400000, guid: d06a33b543aba724b94d5f54e10bdfd0, type: 2}

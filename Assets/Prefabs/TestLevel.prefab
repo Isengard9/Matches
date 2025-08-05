@@ -63,6 +63,23 @@ MonoBehaviour:
   levelController: {fileID: 6727726849596690652}
   CellPrefab: {fileID: 1595848635028212266, guid: 5fafc60b0deaa3e44a1bd33bd0e04b66, type: 3}
   padding: 0.16
+  availablePieces:
+  - {fileID: 11400000, guid: 560da22b6fee71a4cb6f78b1ded4d4fc, type: 2}
+  - {fileID: 11400000, guid: 0de791098b4e2e048ab2cc8ccc44d5f1, type: 2}
+  - {fileID: 11400000, guid: 423acd3d770bb5844a12df80834dcd5e, type: 2}
+  - {fileID: 11400000, guid: 8886406a7a2e79741b3a798e1adee611, type: 2}
+  - {fileID: 11400000, guid: 4cbb979011549334f8e18fb965c07ff5, type: 2}
+  - {fileID: 11400000, guid: 605041dc60540154585465edc44235fe, type: 2}
+  - {fileID: 11400000, guid: 3cbc1619c7f418d4195da3d4147be8a3, type: 2}
+  - {fileID: 11400000, guid: a702985522fae8f42b90a43338b18e33, type: 2}
+  - {fileID: 11400000, guid: d38d4524a0bce614cbc5c0bacf21a542, type: 2}
+  - {fileID: 11400000, guid: d9ad4cc0f1341f34c95fca2235e2398c, type: 2}
+  - {fileID: 11400000, guid: 444dc95251a7cd54ba61473d333119ff, type: 2}
+  - {fileID: 11400000, guid: 7eb318e47099276459ab812612cf9854, type: 2}
+  - {fileID: 11400000, guid: 2339ef4c3588961469562a7db6c7c1df, type: 2}
+  - {fileID: 11400000, guid: 5fc84df84e1daac4a8cc2cad2c682d25, type: 2}
+  - {fileID: 11400000, guid: 0530d48e53fb66e46a0a6d9f32dd84e8, type: 2}
+  - {fileID: 11400000, guid: d559d2a2995885a449ec88209a62023d, type: 2}
 --- !u!114 &3390998468830985693
 MonoBehaviour:
   m_ObjectHideFlags: 0

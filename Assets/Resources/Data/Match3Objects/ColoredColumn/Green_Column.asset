@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ede440b5c6ef4d20b35b71803f636d6f, type: 3}
   m_Name: Green_Column
   m_EditorClassIdentifier: 
-  Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
-  Color: {r: 0.36057067, g: 1, b: 0.2028302, a: 1}
-  Type: 3
+  Sprite: {fileID: 21300000, guid: a8a1a0322f58af34b9031029cff2f1dc, type: 3}
+  Color: {r: 0.2688679, g: 1, b: 0.3030477, a: 1}
+  pieceTypeEnum: 0
+  pieceColor: 2

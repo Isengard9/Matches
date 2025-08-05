@@ -1,8 +1,9 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace MiniGames.Match3.Data
 {
-    public enum PieceType
+    public enum PieceTypeEnum
     {
         Default,
         Bomb,
@@ -10,12 +11,24 @@ namespace MiniGames.Match3.Data
         Column,
         Wall,
     }
+    
+    public enum PieceColorEnum
+    {
+        White,
+        Red,
+        Green,
+        Blue,
+        Yellow,
+        Purple,
+    }
+    
     [CreateAssetMenu(fileName = "Match3Piece", menuName = "NC/Match3/Objects/Piece", order = 0)]
     public class PieceSO : ScriptableObject
     {
         public Sprite Sprite;
         public Color Color = Color.white;
-        public PieceType Type = PieceType.Default;
+        public PieceTypeEnum pieceTypeEnum = PieceTypeEnum.Default;
+        public PieceColorEnum pieceColor = PieceColorEnum.White;
         
     }
 }

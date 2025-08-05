@@ -29,6 +29,7 @@ namespace MiniGames.Match3.Core
         public void SetData(CellData data)
         {
             CellData = data;
+            animator.SetTrigger("Idle");
             if (data != null && data.Piece != null)
             {
                 SpriteRenderer.sprite = data.Piece.Sprite;
@@ -42,7 +43,7 @@ namespace MiniGames.Match3.Core
         
         public bool IsWall()
         {
-            return CellData?.Piece?.Type == PieceType.Wall;
+            return CellData?.Piece?.pieceTypeEnum == PieceTypeEnum.Wall;
         }
         
         public bool IsEmpty()
@@ -119,6 +120,11 @@ namespace MiniGames.Match3.Core
                 animator.SetTrigger("WrongMatch");
                 Debug.Log($"WrongMatch animation triggered for cell at {GridPosition}");
             }
+        }
+
+        public void ClearPiece()
+        {
+            CellData = null;
         }
     }
 }

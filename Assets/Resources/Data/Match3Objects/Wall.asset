@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ede440b5c6ef4d20b35b71803f636d6f, type: 3}
   m_Name: Wall
   m_EditorClassIdentifier: 
-  Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
-  Color: {r: 0.3584906, g: 0, b: 0.03426149, a: 1}
-  Type: 4
+  Sprite: {fileID: 21300000, guid: 29d4af30d7582ae4fbf552f1684425ba, type: 3}
+  Color: {r: 1, g: 1, b: 1, a: 1}
+  pieceTypeEnum: 0
+  pieceColor: 0

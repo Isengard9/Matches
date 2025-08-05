@@ -29,6 +29,8 @@ namespace Core.Managers
         private async void WaitForFirstStart()
         {
             await Task.Delay(1000);
+            currentLevelIndex = ManagerContainer.Instance.GetManager<SaveLoadManager>().UserSaveData.CurrentLevelIndex;
+
             LoadLevel();
         }
 
@@ -49,6 +51,8 @@ namespace Core.Managers
             this.currentLevel = loadLevel;
             this.currentLevel.Load();
             ManagerContainer.EventManager.Publish(new LevelLoadedEvent() { Level = this.currentLevel });
+            ManagerContainer.Instance.GetManager<SaveLoadManager>().UserSaveData.CurrentLevelIndex = currentLevelIndex;
+            ManagerContainer.Instance.GetManager<SaveLoadManager>().SaveUserData();
         }
 
 
@@ -92,6 +96,7 @@ namespace Core.Managers
         {
             ManagerContainer.EventManager.Publish(new LevelFailedEvent() { Level = currentLevel });
         }
+
         public void RestartLevel()
         {
             if (currentLevel == null)

@@ -26,6 +26,7 @@ namespace Core.Managers
 
         private void CreateManagers()
         {
+            AddManager(new SaveLoadManager());
             AddManager(new EventManager());
             AddManager(new LevelManager());
             AddManager(GetComponent<UIManager>());

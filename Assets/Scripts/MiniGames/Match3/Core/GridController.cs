@@ -19,19 +19,21 @@ namespace MiniGames.Match3.Core
 
         [SerializeField] private float padding = 1.2f;
 
-        [Header("Piece Generation")]
-        [SerializeField] private List<PieceSO> availablePieces = new List<PieceSO>();
+        [Header("Piece Generation")] [SerializeField]
+        private List<PieceSO> availablePieces = new List<PieceSO>();
+
         public List<PieceSO> AvailablePieces => availablePieces;
 
         [SerializeField] private float pieceGenerationDelay = 0.1f; // Delay between each piece generation
         [SerializeField] private int maxGenerationAttempts = 10; // Maximum attempts to find a piece without matches
         [SerializeField] private bool preventAutoMatches = true; // Prevent automatic matches on generation
 
-        [Header("Match Controller")]
-        [SerializeField] private MatchController matchController;
+        [Header("Match Controller")] [SerializeField]
+        private MatchController matchController;
 
-        [Header("Special Piece Chance")]
-        [SerializeField] private float specialPieceSpawnChance = 0.1f; // Chance of generating special pieces (0-1)
+        [Header("Special Piece Chance")] [SerializeField]
+        private float specialPieceSpawnChance = 0.1f; // Chance of generating special pieces (0-1)
+
         [SerializeField] private bool limitSpecialPiecesOnInit = true; // Limit special pieces at game start
 
         #endregion
@@ -132,8 +134,7 @@ namespace MiniGames.Match3.Core
             // Check if within grid bounds
             if (!IsValidPosition(toPos))
             {
-                if (Debug.isDebugBuild)
-                    Debug.Log($"Swap failed: Target position {toPos} is out of bounds");
+                Debug.Log($"Swap failed: Target position {toPos} is out of bounds");
                 return false;
             }
 
@@ -142,8 +143,7 @@ namespace MiniGames.Match3.Core
             // Check swap rules
             if (!CanSwapCells(fromCell, toCell))
             {
-                if (Debug.isDebugBuild)
-                    Debug.Log($"Swap failed: Cannot swap {fromPos} with {toPos}");
+                Debug.Log($"Swap failed: Cannot swap {fromPos} with {toPos}");
                 return false;
             }
 
@@ -154,15 +154,14 @@ namespace MiniGames.Match3.Core
 
             if (hasMatches)
             {
-                if (Debug.isDebugBuild)
-                    Debug.Log($"Swap successful: {fromPos} <-> {toPos}");
+                Debug.Log($"Swap successful: {fromPos} <-> {toPos}");
 
                 // Perform animated swap
                 PerformAnimatedSwap(fromCell, toCell);
 
                 // Find and trigger match animations for affected cells by the swap
                 TriggerMatchAnimationsForSwappedCells(fromCell, toCell);
-                
+
                 return true;
             }
             else
@@ -174,8 +173,8 @@ namespace MiniGames.Match3.Core
                 fromCell.TriggerWrongMatchAnimation();
                 toCell.TriggerWrongMatchAnimation();
 
-                if (Debug.isDebugBuild)
-                    Debug.Log($"Swap failed: No matches found after swapping {fromPos} with {toPos}");
+
+                Debug.Log($"Swap failed: No matches found after swapping {fromPos} with {toPos}");
                 return false;
             }
         }
@@ -255,7 +254,7 @@ namespace MiniGames.Match3.Core
             // Update cells in the grid
             Cells[cell1Position.y, cell1Position.x] = cell2;
             Cells[cell2Position.y, cell2Position.x] = cell1;
-            
+
             // Update grid positions of the cells
             cell1.GridPosition = cell2Position;
             cell2.GridPosition = cell1Position;
@@ -323,8 +322,7 @@ namespace MiniGames.Match3.Core
 
             if (hasNewPieces)
             {
-                if (Debug.isDebugBuild)
-                    Debug.Log("New pieces created to fill empty spaces");
+                Debug.Log("New pieces created to fill empty spaces");
                 // Short wait for new pieces to settle
                 yield return new WaitForSeconds(0.2f);
 
@@ -451,8 +449,9 @@ namespace MiniGames.Match3.Core
             }
 
             // Maximum attempts reached, select a normal piece
-            if (Debug.isDebugBuild)
-                Debug.Log($"Could not find non-matching piece for position {position} after {maxGenerationAttempts} attempts");
+
+            Debug.Log(
+                $"Could not find non-matching piece for position {position} after {maxGenerationAttempts} attempts");
 
             // Return a default normal piece
             foreach (var piece in availablePieces)

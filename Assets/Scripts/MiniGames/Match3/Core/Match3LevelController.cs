@@ -35,6 +35,7 @@ namespace MiniGames.Match3.Core
 
         protected override void OnLevelUnloaded(LevelUnloadedEvent e)
         {
+            
         }
 
         protected override void AddListener()
@@ -79,6 +80,8 @@ namespace MiniGames.Match3.Core
             {
                 // If score is enough, end the level
                 ManagerContainer.Instance.GetManager<LevelManager>().EndLevel();
+                ManagerContainer.Instance.GetManager<SaveLoadManager>().UserSaveData.TotalScore += Match3Data.currentScore;
+                ManagerContainer.Instance.GetManager<SaveLoadManager>().SaveUserData();
             }
         }
     }

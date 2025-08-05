@@ -85,6 +85,8 @@ MonoBehaviour:
   maxGenerationAttempts: 10
   preventAutoMatches: 1
   matchController: {fileID: 3456819207314125766}
+  specialPieceSpawnChance: 0.5
+  limitSpecialPiecesOnInit: 0
 --- !u!114 &3390998468830985693
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -117,7 +119,3 @@ MonoBehaviour:
   destructionEffectDelay: 0.05
   animationStartDelay: 0.1
   animationDuration: 0.5
-  minCellsForBomb: 7
-  minCellsForRow: 5
-  minCellsForColumn: 5
-  specialPieceChance: 0.05

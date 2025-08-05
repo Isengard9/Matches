@@ -8,6 +8,8 @@ namespace MiniGames.Match3.Core
     [RequireComponent(typeof(Match3LevelController))]
     public class GridController : MonoBehaviour
     {
+        #region Fields
+
         public Match3LevelController levelController;
         public CellController CellPrefab;
 
@@ -15,29 +17,34 @@ namespace MiniGames.Match3.Core
 
         [SerializeField] private float padding = 1.2f;
 
-        [Header("Piece Generation")] [SerializeField]
-        private List<PieceSO> availablePieces = new List<PieceSO>();
-
+        [Header("Piece Generation")]
+        [SerializeField] private List<PieceSO> availablePieces = new List<PieceSO>();
         public List<PieceSO> AvailablePieces => availablePieces;
-        [SerializeField] private float pieceGenerationDelay = 0.1f; // Her piece oluşturma arasındaki bekleme
 
-        [SerializeField]
-        private int maxGenerationAttempts = 10; // Eşleşme olmayan piece bulmak için maksimum deneme sayısı
+        [SerializeField] private float pieceGenerationDelay = 0.1f; // Delay between each piece generation
+        [SerializeField] private int maxGenerationAttempts = 10; // Maximum attempts to find a piece without matches
+        [SerializeField] private bool preventAutoMatches = true; // Prevent automatic matches on generation
 
-        [SerializeField] private bool preventAutoMatches = true; // Otomatik eşleşmeleri engelle
-
-        [Header("Match Controller")] [SerializeField]
-        private MatchController matchController;
+        [Header("Match Controller")]
+        [SerializeField] private MatchController matchController;
 
         [Header("Special Piece Chance")]
-        [SerializeField] private float specialPieceSpawnChance = 0.1f; // Özel piece'lerin oluşma olasılığı (0-1 arası)
-        [SerializeField] private bool limitSpecialPiecesOnInit = true; // Oyun başlangıcında özel piece'leri sınırlandır
+        [SerializeField] private float specialPieceSpawnChance = 0.1f; // Chance of generating special pieces (0-1)
+        [SerializeField] private bool limitSpecialPiecesOnInit = true; // Limit special pieces at game start
+
+        #endregion
+
+        #region Unity Lifecycle
 
         private void Awake()
         {
             if (matchController == null)
                 matchController = GetComponent<MatchController>();
         }
+
+        #endregion
+
+        #region Grid Management
 
         [ContextMenu("Generate Grid")]
         public void CreateGrid()
@@ -52,38 +59,38 @@ namespace MiniGames.Match3.Core
             var gridData = levelController.Match3Data.GridData;
             int gridSize = (int)gridData.GridSize;
 
-            // Cells array'ini initialize et
+            // Initialize the cells array
             Cells = new CellController[gridSize, gridSize];
 
-            // Mevcut grid'i temizle (Editor güvenli)
+            // Clear existing grid (Editor safe)
             ClearExistingGrid();
 
-            // GridData'dan cells'i initialize et
+            // Initialize cells from GridData
             if (gridData.Cells == null)
             {
                 Debug.LogError("GridData.Cells is not initialized.");
                 return;
             }
 
-            // Yeni grid oluştur
+            // Create new grid
             for (int row = 0; row < gridSize; row++)
             {
                 for (int col = 0; col < gridSize; col++)
                 {
-                    // World position: col = x, row = y (ama row'u ters çevir çünkü Unity'de Y yukarı doğru pozitif)
+                    // World position: col = x, row = y (but invert row since Y is positive upwards in Unity)
                     Vector3 position = new Vector3(col * padding, -row * padding, 0);
                     var cellObj = Instantiate(CellPrefab.gameObject, position, Quaternion.identity, transform);
                     cellObj.name = $"Cell_{row}_{col}";
 
                     CellController cellController = cellObj.GetComponent<CellController>();
-                    // Grid position: x = col, y = row (0,0 = sol üst, 4,4 = sağ alt)
+                    // Grid position: x = col, y = row (0,0 = top left, 4,4 = bottom right)
                     cellController.GridPosition = new Vector2Int(col, row);
 
-                    // GridData'dan CellData'yı al ve set et
+                    // Get CellData from GridData and set it
                     var cellData = gridData.Cells[row, col];
                     cellController.SetData(cellData);
 
-                    // Cells array'ine kaydet: [row, col] = [y, x]
+                    // Save to Cells array: [row, col] = [y, x]
                     Cells[row, col] = cellController;
                 }
             }
@@ -100,71 +107,79 @@ namespace MiniGames.Match3.Core
                 else
                     DestroyImmediate(child.gameObject);
 #else
-        Destroy(child.gameObject);
+                Destroy(child.gameObject);
 #endif
             }
         }
 
+        #endregion
+
+        #region Swapping
+
         /// <summary>
-        /// Swap işlemini dener. Tüm kuralları kontrol eder.
+        /// Attempts to swap pieces. Checks all rules.
         /// </summary>
         public bool TrySwap(CellController fromCell, Vector2Int direction)
         {
             if (fromCell == null) return false;
 
-            // Hedef pozisyonu hesapla
+            // Calculate target position
             Vector2Int fromPos = fromCell.GridPosition;
             Vector2Int toPos = fromPos + direction;
 
-            // Grid sınırları içinde mi kontrol et
+            // Check if within grid bounds
             if (!IsValidPosition(toPos))
             {
-                Debug.Log($"Swap failed: Target position {toPos} is out of bounds");
+                if (Debug.isDebugBuild)
+                    Debug.Log($"Swap failed: Target position {toPos} is out of bounds");
                 return false;
             }
 
             CellController toCell = Cells[toPos.y, toPos.x];
 
-            // Swap kurallarını kontrol et
+            // Check swap rules
             if (!CanSwapCells(fromCell, toCell))
             {
-                Debug.Log($"Swap failed: Cannot swap {fromPos} with {toPos}");
+                if (Debug.isDebugBuild)
+                    Debug.Log($"Swap failed: Cannot swap {fromPos} with {toPos}");
                 return false;
             }
 
-            // Geçici swap yap ve match kontrol et
+            // Temporarily swap and check for matches
             SwapCellData(fromCell, toCell);
 
             bool hasMatches = CheckForMatches(fromPos) || CheckForMatches(toPos);
 
             if (hasMatches)
             {
-                Debug.Log($"Swap successful: {fromPos} <-> {toPos}");
+                if (Debug.isDebugBuild)
+                    Debug.Log($"Swap successful: {fromPos} <-> {toPos}");
 
-                // Animasyonlu swap gerçekleştir
+                // Perform animated swap
                 PerformAnimatedSwap(fromCell, toCell);
 
-                // Sadece swap yapılan cell'lerden etkilenen eşleşmeleri bul ve animasyon tetikle
+                // Find and trigger match animations for affected cells by the swap
                 TriggerMatchAnimationsForSwappedCells(fromCell, toCell);
 
                 return true;
             }
             else
             {
-                // Match bulunamadı, swap'i geri al
+                // No match found, revert the swap
                 SwapCellData(fromCell, toCell);
 
-                // Swap yapılmaya çalışılan cell'lerde WrongMatch animasyonu tetikle
+                // Trigger WrongMatch animation on the cells that were attempted to be swapped
                 fromCell.TriggerWrongMatchAnimation();
                 toCell.TriggerWrongMatchAnimation();
 
-                Debug.Log($"Swap failed: No matches found after swapping {fromPos} with {toPos}");
+                if (Debug.isDebugBuild)
+                    Debug.Log($"Swap failed: No matches found after swapping {fromPos} with {toPos}");
                 return false;
             }
         }
 
         /// <summary>
-        /// Sadece swap yapılan cell'lerden etkilenen eşleşmeleri bulır ve match işlemlerini başlatır
+        /// Finds matches affected by swapped cells and initiates match processing
         /// </summary>
         private void TriggerMatchAnimationsForSwappedCells(CellController cell1, CellController cell2)
         {
@@ -179,7 +194,7 @@ namespace MiniGames.Match3.Core
         }
 
         /// <summary>
-        /// Belirtilen pozisyonda 3'lü match var mı kontrol eder (MatchController'dan delege edilir)
+        /// Checks if there's a 3-match at the specified position (delegated from MatchController)
         /// </summary>
         private bool CheckForMatches(Vector2Int position)
         {
@@ -192,33 +207,33 @@ namespace MiniGames.Match3.Core
         }
 
         /// <summary>
-        /// İki cell arasında animasyonlı swap gerçekleştirir
+        /// Performs an animated swap between two cells
         /// </summary>
         private void PerformAnimatedSwap(CellController cell1, CellController cell2)
         {
             Vector3 cell1Position = cell1.transform.position;
             Vector3 cell2Position = cell2.transform.position;
 
-            // Her iki cell'i de karşı pozisyona animasyonla götür
+            // Animate both cells to their opposite positions
             cell1.MoveTo(cell2Position);
             cell2.MoveTo(cell1Position);
         }
 
         /// <summary>
-        /// İki cell'in swap edilip edilemeyeceğini kontrol eder
+        /// Checks if two cells can be swapped
         /// </summary>
         private bool CanSwapCells(CellController fromCell, CellController toCell)
         {
-            // Null kontrolleri
+            // Null checks
             if (fromCell == null || toCell == null) return false;
 
-            // Wall kontrolü - Duvar ile hiçbir şey swap edilemez
+            // Wall check - Nothing can be swapped with a wall
             if (fromCell.IsWall() || toCell.IsWall())
             {
                 return false;
             }
 
-            // En az bir cell'de piece olmalı
+            // At least one cell must have a piece
             if (fromCell.IsEmpty() && toCell.IsEmpty())
             {
                 return false;
@@ -228,23 +243,28 @@ namespace MiniGames.Match3.Core
         }
 
         /// <summary>
-        /// İki cell'in data'larını swap eder
+        /// Swaps the data between two cells
         /// </summary>
         private void SwapCellData(CellController cell1, CellController cell2)
         {
             var cell1Position = cell1.GridPosition;
             var cell2Position = cell2.GridPosition;
 
-            // Grid'deki cell'lerin pozisyonlarını güncelle
+            // Update cells in the grid
             Cells[cell1Position.y, cell1Position.x] = cell2;
             Cells[cell2Position.y, cell2Position.x] = cell1;
-            // Cell'lerin grid pozisyonlarını güncelle
+            
+            // Update grid positions of the cells
             cell1.GridPosition = cell2Position;
             cell2.GridPosition = cell1Position;
         }
 
+        #endregion
+
+        #region Utility Functions
+
         /// <summary>
-        /// İki rengin eşleşip eşleşmediğini kontrol eder
+        /// Checks if two colors match
         /// </summary>
         private bool ColorsMatch(PieceColorEnum color1, PieceColorEnum color2)
         {
@@ -252,7 +272,7 @@ namespace MiniGames.Match3.Core
         }
 
         /// <summary>
-        /// Pozisyonun grid sınırları içinde olup olmadığını kontrol eder
+        /// Checks if the position is within grid bounds
         /// </summary>
         public bool IsValidPosition(Vector2Int position)
         {
@@ -263,8 +283,12 @@ namespace MiniGames.Match3.Core
                    position.y >= 0 && position.y < gridSize;
         }
 
+        #endregion
+
+        #region Piece Generation
+
         /// <summary>
-        /// Boş alanları availablePieces listesinden seçilen piece'lerle doldurur
+        /// Fills empty spaces with pieces selected from the availablePieces list
         /// </summary>
         public IEnumerator CreateNewPieces()
         {
@@ -277,7 +301,7 @@ namespace MiniGames.Match3.Core
             int gridSize = Cells.GetLength(0);
             bool hasNewPieces = false;
             var createdPieces = new List<Vector2Int>();
-            // Her sütunu aşağıdan yukarıya doğru kontrol et
+            // Check each column from bottom to top
             for (int col = 0; col < gridSize; col++)
             {
                 for (int row = gridSize - 1; row >= 0; row--)
@@ -285,7 +309,7 @@ namespace MiniGames.Match3.Core
                     Vector2Int pos = new Vector2Int(col, row);
                     CellController cell = Cells[pos.y, pos.x];
 
-                    // Boş cell ve duvar değilse yeni piece oluştur
+                    // Create new piece if cell is empty and not a wall
                     if (cell.IsEmpty() && !cell.IsWall())
                     {
                         CreateNewPieceAt(pos);
@@ -297,19 +321,19 @@ namespace MiniGames.Match3.Core
 
             if (hasNewPieces)
             {
-                Debug.Log("New pieces created to fill empty spaces");
-                // Yeni piece'lerin yerleşmesi için kısa bekleme
+                if (Debug.isDebugBuild)
+                    Debug.Log("New pieces created to fill empty spaces");
+                // Short wait for new pieces to settle
                 yield return new WaitForSeconds(0.2f);
 
-                // Cascade eşleşmeleri kontrol et
-                //yield return StartCoroutine(CheckForCascadingMatches());
+                // Check for cascading matches
                 yield return StartCoroutine(CheckForCascadingMatches(createdPieces));
             }
         }
 
         /// <summary>
-        /// Belirtilen pozisyonda availablePieces listesinden rastgele bir piece oluşturur
-        /// Eşleşme kontrolü yaparak otomatik match'leri engeller
+        /// Creates a random piece at the specified position from the availablePieces list
+        /// Prevents automatic matches by checking match rules
         /// </summary>
         private void CreateNewPieceAt(Vector2Int position)
         {
@@ -328,17 +352,17 @@ namespace MiniGames.Match3.Core
 
             if (preventAutoMatches)
             {
-                // Eşleşme yapmayacak piece bulmaya çalış
+                // Try to find a piece that won't create a match
                 selectedPiece = FindNonMatchingPiece(position);
             }
 
-            // Eğer eşleşmeyen piece bulunamadıysa veya preventAutoMatches false ise rastgele seç
+            // If no non-matching piece was found or preventAutoMatches is false, select randomly
             if (selectedPiece == null)
             {
                 selectedPiece = availablePieces[Random.Range(0, availablePieces.Count)];
             }
 
-            // Piece'in kopyasını oluştur (ScriptableObject referansını korumak için)
+            // Create a copy of the piece (to preserve the ScriptableObject reference)
             var newPieceData = ScriptableObject.CreateInstance<PieceSO>();
             newPieceData.pieceTypeEnum = selectedPiece.pieceTypeEnum;
             newPieceData.Color = selectedPiece.Color;
@@ -349,21 +373,19 @@ namespace MiniGames.Match3.Core
             {
                 Piece = newPieceData,
             };
-            // Cell'e yeni piece'i set et
+            // Set the new piece to the cell
             cell.SetData(cellData);
-
-            //Debug.Log($"Created new {newPieceData.pieceTypeEnum} piece with color {newPieceData.Color} at {position}");
         }
 
         /// <summary>
-        /// Belirtilen pozisyonda eşleşme yapmayacak bir piece bulmaya çalışır
+        /// Attempts to find a piece that won't create a match at the specified position
         /// </summary>
         private PieceSO FindNonMatchingPiece(Vector2Int position)
         {
-            // Mevcut cell'i geçici olarak kaydet
+            // Save the target cell temporarily
             CellController targetCell = Cells[position.y, position.x];
 
-            // Sadece normal piece'leri içeren bir liste oluştur (performans için)
+            // Create a list containing only normal pieces (for performance)
             List<PieceSO> normalPieces = new List<PieceSO>();
             foreach (var piece in availablePieces)
             {
@@ -373,7 +395,7 @@ namespace MiniGames.Match3.Core
                 }
             }
 
-            // Normal piece yoksa, tüm listeyi kullan
+            // If no normal pieces, use the entire list
             if (normalPieces.Count == 0)
             {
                 normalPieces = availablePieces;
@@ -383,21 +405,21 @@ namespace MiniGames.Match3.Core
             {
                 PieceSO candidatePiece;
 
-                // Özel piece mi yoksa normal piece mı seçileceğini belirle
+                // Determine whether to select a special piece or normal piece
                 bool selectSpecialPiece = Random.value < specialPieceSpawnChance && !limitSpecialPiecesOnInit;
 
                 if (selectSpecialPiece)
                 {
-                    // Özel piece seçme şansı var
+                    // Chance to select a special piece
                     candidatePiece = availablePieces[Random.Range(0, availablePieces.Count)];
                 }
                 else
                 {
-                    // Normal piece seç
+                    // Select a normal piece
                     candidatePiece = normalPieces[Random.Range(0, normalPieces.Count)];
                 }
 
-                // Geçici olarak bu piece'i yerleştir
+                // Temporarily place this piece
                 var tempPieceData = ScriptableObject.CreateInstance<PieceSO>();
                 tempPieceData.pieceTypeEnum = selectSpecialPiece ? candidatePiece.pieceTypeEnum : PieceTypeEnum.Default;
                 tempPieceData.Color = candidatePiece.Color;
@@ -411,25 +433,26 @@ namespace MiniGames.Match3.Core
 
                 targetCell.SetData(tempCellData, true);
 
-                // Bu piece ile eşleşme oluşur mu kontrol et
+                // Check if this piece would create a match
                 bool wouldCreateMatch = CheckForMatches(position);
 
-                // Eğer eşleşme oluşmazsa bu piece'i kabul et
+                // If it doesn't create a match, accept this piece
                 if (!wouldCreateMatch)
                 {
-                    // Geçici piece'i temizle (gerçek piece CreateNewPieceAt'da oluşturulacak)
+                    // Clear temporary piece (real piece will be created in CreateNewPieceAt)
                     targetCell.ClearPiece();
                     return candidatePiece;
                 }
 
-                // Geçici piece'i temizle ve başka bir piece dene
+                // Clear temporary piece and try another piece
                 targetCell.ClearPiece();
             }
 
-            // Maksimum deneme sayısına ulaşıldı, normal piece seç
-            Debug.Log($"Could not find non-matching piece for position {position} after {maxGenerationAttempts} attempts");
+            // Maximum attempts reached, select a normal piece
+            if (Debug.isDebugBuild)
+                Debug.Log($"Could not find non-matching piece for position {position} after {maxGenerationAttempts} attempts");
 
-            // Default olarak normal piece döndür
+            // Return a default normal piece
             foreach (var piece in availablePieces)
             {
                 if (piece.pieceTypeEnum == PieceTypeEnum.Default)
@@ -438,10 +461,12 @@ namespace MiniGames.Match3.Core
                 }
             }
 
-            return availablePieces[0]; // Hiç normal piece yoksa ilk piece'i döndür
+            return availablePieces[0]; // If no normal pieces, return the first piece
         }
-        
-        
+
+        #endregion
+
+        #region Match Processing
 
         private IEnumerator CheckForCascadingMatches(List<Vector2Int> createdPieces)
         {
@@ -455,5 +480,7 @@ namespace MiniGames.Match3.Core
                 }
             }
         }
+
+        #endregion
     }
 }

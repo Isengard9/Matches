@@ -1,7 +1,9 @@
 using System.Collections;
 using UnityEngine;
 using System.Collections.Generic;
+using Core.Managers;
 using MiniGames.Match3.Data;
+using MiniGames.Match3.Events;
 
 namespace MiniGames.Match3.Core
 {
@@ -122,7 +124,7 @@ namespace MiniGames.Match3.Core
         public bool TrySwap(CellController fromCell, Vector2Int direction)
         {
             if (fromCell == null) return false;
-
+            ManagerContainer.EventManager.Publish(new Match3SwapPerformedEvent());
             // Calculate target position
             Vector2Int fromPos = fromCell.GridPosition;
             Vector2Int toPos = fromPos + direction;
@@ -160,7 +162,7 @@ namespace MiniGames.Match3.Core
 
                 // Find and trigger match animations for affected cells by the swap
                 TriggerMatchAnimationsForSwappedCells(fromCell, toCell);
-
+                
                 return true;
             }
             else

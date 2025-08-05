@@ -1,6 +1,6 @@
 namespace Core.Events.Level
 {
-    public class LevelEndedEvent
+    public struct LevelEndedEvent
     {
         public ILevel Level { get; set; }
     }

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Constants;
 using Core.Events.Level;
 using UnityEngine;
@@ -10,7 +11,8 @@ namespace Core.Managers
     {
         [SerializeField] private LevelsContainerSO levelsContainer;
         private List<Level> levels => levelsContainer.Levels.ConvertAll(x => x.Level);
-        private Level CurrentLevel;
+        private Level currentLevel;
+        public Level CurrentLevel => currentLevel;
         private int currentLevelIndex = 0;
 
         public override void Initialize()
@@ -20,59 +22,83 @@ namespace Core.Managers
             {
                 Debug.LogError("LevelsContainerSO not found in Resources/Data/Level/LevelsContainer");
             }
+
+            WaitForFirstStart();
+        }
+
+        private async void WaitForFirstStart()
+        {
+            await Task.Delay(1000);
+            LoadLevel();
         }
 
         public void StartLevel()
         {
-            var currentLevel = levels[currentLevelIndex];
             if (currentLevel == null)
             {
                 return;
             }
 
-            CurrentLevel = currentLevel;
-
             ManagerContainer.EventManager.Publish(new LevelStartedEvent() { Level = currentLevel });
         }
 
+
         public void LoadLevel()
         {
-            if (CurrentLevel == null)
-                return;
-
-            CurrentLevel.Load();
-
-            ManagerContainer.EventManager.Publish(new LevelLoadedEvent() { Level = CurrentLevel });
+            var loadLevel = levels[currentLevelIndex];
+            this.currentLevel = loadLevel;
+            this.currentLevel.Load();
+            ManagerContainer.EventManager.Publish(new LevelLoadedEvent() { Level = this.currentLevel });
         }
 
-        public void EndLevel()
-        {
-            if (CurrentLevel == null)
-                return;
 
-            ManagerContainer.EventManager.Publish(new LevelEndedEvent() { Level = CurrentLevel });
+        public void LoadNextLevel()
+        {
+            UnloadLevel();
+
             currentLevelIndex++;
 
             if (currentLevelIndex < levels.Count)
             {
-                CurrentLevel = levels[currentLevelIndex];
+                currentLevel = levels[currentLevelIndex];
             }
             else
             {
+                currentLevelIndex--;
                 Debug.Log("All levels completed.");
             }
+
+            LoadLevel();
+        }
+
+        public void EndLevel()
+        {
+            if (currentLevel == null)
+                return;
+
+            ManagerContainer.EventManager.Publish(new LevelEndedEvent() { Level = currentLevel });
         }
 
         public void UnloadLevel()
         {
-            if (CurrentLevel == null)
+            if (currentLevel == null)
                 return;
 
-            var oldLevel = levels[currentLevelIndex - 1];
-            if (oldLevel == null) return;
+            currentLevel?.Unload();
+            ManagerContainer.EventManager.Publish(new LevelUnloadedEvent() { Level = currentLevel });
+        }
 
-            oldLevel?.Unload();
-            ManagerContainer.EventManager.Publish(new LevelUnloadedEvent() { Level = oldLevel });
+        public void LevelFailed()
+        {
+            ManagerContainer.EventManager.Publish(new LevelFailedEvent() { Level = currentLevel });
+        }
+        public void RestartLevel()
+        {
+            if (currentLevel == null)
+                return;
+            UnloadLevel();
+            ManagerContainer.EventManager.Publish(new LevelRestartedEvent() { Level = currentLevel });
+            LoadLevel();
         }
     }
 }

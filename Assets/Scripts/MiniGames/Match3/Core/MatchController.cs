@@ -2,6 +2,9 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using MiniGames.Match3.Data;
+using MiniGames.Match3.Events;
+using Core;
+using Core.Managers;
 
 namespace MiniGames.Match3.Core
 {
@@ -164,6 +167,9 @@ namespace MiniGames.Match3.Core
             yield return StartCoroutine(TriggerMatchAnimations(allCellsToDestroy));
             yield return new WaitForSeconds(animationDuration);
             
+            // Calculate and publish score before clearing pieces
+            int totalEarnedScore = CalculateAndPublishScore(allCellsToDestroy);
+            
             foreach (var cell in allCellsToDestroy)
             {
                 if (cell != null && !cell.IsEmpty() && !cell.IsWall())
@@ -273,6 +279,85 @@ namespace MiniGames.Match3.Core
                 {
                     effects.Add(gridController.Cells[pos.y, pos.x]);
                 }
+            }
+        }
+        
+        #endregion
+        
+        #region Score Calculation
+        
+        /// <summary>
+        /// Calculates score for destroyed pieces and publishes score events
+        /// </summary>
+        private int CalculateAndPublishScore(HashSet<CellController> cellsToDestroy)
+        {
+            var match3Data = gridController.levelController.Match3Data;
+            if (match3Data.scoreData == null)
+            {
+                Debug.LogWarning("Score data is not assigned in Match3DataSO!");
+                return 0;
+            }
+            
+            int totalEarnedScore = 0;
+            
+            foreach (var cell in cellsToDestroy)
+            {
+                if (cell != null && !cell.IsEmpty() && !cell.IsWall() && cell.CellData.Piece != null)
+                {
+                    var pieceType = cell.CellData.Piece.pieceTypeEnum;
+                    int earnedPoints = GetScoreForPieceType(pieceType, match3Data.scoreData);
+                    totalEarnedScore += earnedPoints;
+                    
+                    // Publish individual piece score event
+                    string pieceTypeName = GetPieceTypeName(pieceType);
+                    match3Data.currentScore += earnedPoints;
+                    
+                    ManagerContainer.EventManager.Publish(new Match3ScoreEarnedEvent()
+                    {
+                        score = match3Data.currentScore
+                    });
+                }
+            }
+            
+            return totalEarnedScore;
+        }
+        
+        /// <summary>
+        /// Gets score value for specific piece type
+        /// </summary>
+        private int GetScoreForPieceType(PieceTypeEnum pieceType, Match3ScoreData scoreData)
+        {
+            switch (pieceType)
+            {
+                case PieceTypeEnum.Default:
+                    return scoreData.defaultPieceScore;
+                case PieceTypeEnum.Bomb:
+                    return scoreData.bombPieceScore;
+                case PieceTypeEnum.Row:
+                case PieceTypeEnum.Column:
+                    return scoreData.rowColumnPieceScore;
+                default:
+                    return scoreData.defaultPieceScore;
+            }
+        }
+        
+        /// <summary>
+        /// Gets piece type name for events
+        /// </summary>
+        private string GetPieceTypeName(PieceTypeEnum pieceType)
+        {
+            switch (pieceType)
+            {
+                case PieceTypeEnum.Default:
+                    return "Default";
+                case PieceTypeEnum.Bomb:
+                    return "Bomb";
+                case PieceTypeEnum.Row:
+                    return "Row";
+                case PieceTypeEnum.Column:
+                    return "Column";
+                default:
+                    return "Unknown";
             }
         }
         

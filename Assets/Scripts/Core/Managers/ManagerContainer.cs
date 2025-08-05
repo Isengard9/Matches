@@ -1,14 +1,14 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
 namespace Core.Managers
 {
+    [DefaultExecutionOrder(-2)]
     public class ManagerContainer : MonoBehaviour
     {
         public static ManagerContainer Instance { get; private set; }
-        public List<IManager> _managers = new List<IManager>();
+        [SerializeField] public List<IManager> _managers = new List<IManager>();
         public static EventManager EventManager { get; private set; }
         private void Awake()
         {
@@ -28,6 +28,7 @@ namespace Core.Managers
         {
             AddManager(new EventManager());
             AddManager(new LevelManager());
+            AddManager(GetComponent<UIManager>());
             // Diğer yöneticiler buraya eklenecek
         }
 
@@ -38,12 +39,13 @@ namespace Core.Managers
 
         private void InitializeManagers()
         {
+            EventManager = GetManager<EventManager>();
             foreach (var manager in _managers)
             {
                 manager.Initialize();
             }
             
-            EventManager = GetManager<EventManager>();
+           
         }
 
         public T GetManager<T>() where T : class, IManager

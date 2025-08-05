@@ -8,6 +8,13 @@ namespace MiniGames.Match3.Data
     [CreateAssetMenu(fileName = "Match3 Data", menuName = "NC/Matches/Match3 Level Data", order = 0)]
     public class Match3DataSO : Level
     {
+        public Match3ScoreData scoreData;
+        public int maxSwapAttempts = 10;
+        public int currentSwapAttempts;
+        
+        public int currentScore;
+        public int TargetScore = 20;
+        
         public Match3LevelController LevelPrefab;
         private Match3LevelController createdLevel;
         
@@ -24,6 +31,10 @@ namespace MiniGames.Match3.Data
         public override void Load()
         {
             base.Load();
+            
+            currentScore = 0;
+            currentSwapAttempts = 0;
+            
             if (LevelPrefab != null)
             {
                 createdLevel = Instantiate(LevelPrefab);
@@ -42,6 +53,7 @@ namespace MiniGames.Match3.Data
                 createdLevel.gridController.ClearExistingGrid();
                 Destroy(createdLevel.gameObject);
                 createdLevel = null;
+                currentScore = currentSwapAttempts = 0;
             }
             else
             {

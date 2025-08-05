@@ -12,6 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ffa6f273c8741fdb16768d57bd9345e, type: 3}
   m_Name: TestLevel
   m_EditorClassIdentifier: 
-  isLoaded: 0
+  isLoaded: 1
+  scoreData: {fileID: 11400000, guid: 9d21fdd1b8e22714585218640f5a1b51, type: 2}
+  maxSwapAttempts: 10
+  currentSwapAttempts: 0
+  currentScore: 0
+  TargetScore: 20
   LevelPrefab: {fileID: 6727726849596690652, guid: 74fb64fcfcd56c04aa053ffd1a82e3ae, type: 3}
   GridData: {fileID: 11400000, guid: 2aba40e5b2e8ede41b1b4412c2ed4284, type: 2}

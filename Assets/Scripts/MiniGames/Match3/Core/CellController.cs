@@ -26,9 +26,11 @@ namespace MiniGames.Match3.Core
                 animator = GetComponent<Animator>();
         }
 
-        public void SetData(CellData data)
+        public void SetData(CellData data,bool trying = false)
         {
             CellData = data;
+            if(trying)
+                return;
             animator.SetTrigger("Idle");
             if (data != null && data.Piece != null)
             {
@@ -106,7 +108,6 @@ namespace MiniGames.Match3.Core
             if (animator != null)
             {
                 animator.SetTrigger("Match");
-                Debug.Log($"Match animation triggered for cell at {GridPosition}");
             }
         }
         
@@ -118,7 +119,6 @@ namespace MiniGames.Match3.Core
             if (animator != null)
             {
                 animator.SetTrigger("WrongMatch");
-                Debug.Log($"WrongMatch animation triggered for cell at {GridPosition}");
             }
         }
 

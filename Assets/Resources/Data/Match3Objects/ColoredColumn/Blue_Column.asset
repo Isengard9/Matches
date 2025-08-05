@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Sprite: {fileID: 21300000, guid: 81eda248035ab9249bf1ef50fd2c570b, type: 3}
   Color: {r: 1, g: 1, b: 1, a: 1}
-  pieceTypeEnum: 0
+  pieceTypeEnum: 3
   pieceColor: 3

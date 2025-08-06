@@ -70,7 +70,7 @@ namespace Core.Controllers.Camera
         
         private void FindPlayer()
         {
-            // RunnerPlayerController'ı sahneде bul
+            // Find RunnerPlayerController in the scene
             var playerController = FindObjectOfType<RunnerPlayerController>().playerObject;
             if (playerController != null)
             {

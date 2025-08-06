@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace MiniGames.Match3.Data
 {
-    [CreateAssetMenu(fileName = "Match3 Data", menuName = "NC/Matches/Match3 Level Data", order = 0)]
+    [CreateAssetMenu(fileName = "Match3 Data", menuName = "NC/Matches/Games/Match3/ Level Data", order = 0)]
     public class Match3DataSO : Level
     {
         public Match3ScoreData scoreData;

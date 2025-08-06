@@ -67,7 +67,7 @@ namespace MiniGames.Match3.Core
                 startTouchPosition = Input.mousePosition;
                 isTouching = true;
 
-                // Hangi cell'e dokunulduğunu bul
+                // Find which cell was touched
                 selectedCell = GetCellAtPosition(Camera.main.ScreenToWorldPoint(Input.mousePosition));
             }
             else if (Input.GetMouseButtonUp(0) && isTouching)
@@ -101,7 +101,7 @@ namespace MiniGames.Match3.Core
 
             Vector2Int swipeDirection = GetSwipeDirection(swipeVector);
 
-            // GridController'a swipe isteği gönder
+            // Send swipe request to GridController
             if (gridController != null)
             {
                 gridController.TrySwap(selectedCell, swipeDirection);
@@ -119,8 +119,6 @@ namespace MiniGames.Match3.Core
             }
             else
             {
-                // Vertical swipe - Unity screen koordinatlarında Y yukarı pozitif
-                // Ama bizim grid sistemimizde Y aşağı pozitif
                 return normalizedSwipe.y > 0 ? Vector2Int.down : Vector2Int.up;
             }
         }

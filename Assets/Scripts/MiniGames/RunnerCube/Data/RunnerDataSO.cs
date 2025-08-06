@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace MiniGames.RunnerCube.Data
 {
-    [CreateAssetMenu(fileName = "Runner Level Data", menuName = "NC/Matches/Runner Level Data", order = 0)]
+    [CreateAssetMenu(fileName = "Runner Level Data", menuName = "NC/Matches/Games/Runner/Level Data", order = 0)]
     public class RunnerDataSO : Level
     {
         public RoadData RoadData;

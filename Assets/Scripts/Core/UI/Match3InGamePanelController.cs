@@ -2,7 +2,6 @@ using Core.Managers;
 using MiniGames.Match3.Core;
 using MiniGames.Match3.Events;
 using TMPro;
-using UnityEngine;
 
 namespace Core.UI
 {

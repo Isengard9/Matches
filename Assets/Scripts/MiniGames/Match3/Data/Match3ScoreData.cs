@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Match3 Score Data", menuName = "NC/Matches/Match3 Score Data", order = 1)]
+[CreateAssetMenu(fileName = "Match3 Score Data", menuName = "NC/Matches/Games/Match3/ Score Data", order = 1)]
 public class Match3ScoreData : ScriptableObject
 {
     public int defaultPieceScore = 1;

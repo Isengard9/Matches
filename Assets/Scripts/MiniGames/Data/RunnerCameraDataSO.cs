@@ -3,7 +3,7 @@ using UnityEngine;
 namespace MiniGames.Data
 {
     
-    [CreateAssetMenu(fileName = "RunnerCamaraData", menuName = "NC/RunnerCameraData", order = 0)]
+    [CreateAssetMenu(fileName = "RunnerCamaraData", menuName = "NC/Matches/Camera/RunnerCameraData", order = 0)]
     public class RunnerCameraDataSO : CameraDataSO
     {
         [Header("Player Follow Settings")]

@@ -13,13 +13,7 @@ namespace MiniGames.Match3.Core
     {
         public Match3DataSO Match3Data => Data as Match3DataSO;
         public GridController gridController;
-
-
-        // private void Awake()
-        // {
-        //     Data = data;
-        // }
-
+        
         private void Start()
         {
             ManagerContainer.EventManager.Publish(new Match3LevelLoaded()

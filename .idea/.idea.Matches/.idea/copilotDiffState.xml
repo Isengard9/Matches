@@ -81,6 +81,55 @@
             </PendingDiffInfo>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/Assets/Scripts/Tests/Editor/EditorTests.asmdef">
+          <value>
+            <PendingDiffInfo>
+              <option name="filePath" value="$PROJECT_DIR$/Assets/Scripts/Tests/Editor/EditorTests.asmdef" />
+            </PendingDiffInfo>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/Assets/Scripts/Tests/Editor/EventManagerTests.cs">
+          <value>
+            <PendingDiffInfo>
+              <option name="filePath" value="$PROJECT_DIR$/Assets/Scripts/Tests/Editor/EventManagerTests.cs" />
+            </PendingDiffInfo>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/Assets/Scripts/Tests/Editor/LevelManagerTests.cs">
+          <value>
+            <PendingDiffInfo>
+              <option name="filePath" value="$PROJECT_DIR$/Assets/Scripts/Tests/Editor/LevelManagerTests.cs" />
+            </PendingDiffInfo>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/Assets/Scripts/Tests/Editor/LevelTests.cs">
+          <value>
+            <PendingDiffInfo>
+              <option name="filePath" value="$PROJECT_DIR$/Assets/Scripts/Tests/Editor/LevelTests.cs" />
+            </PendingDiffInfo>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/Assets/Scripts/Tests/Editor/MathUtilityTests.cs">
+          <value>
+            <PendingDiffInfo>
+              <option name="filePath" value="$PROJECT_DIR$/Assets/Scripts/Tests/Editor/MathUtilityTests.cs" />
+            </PendingDiffInfo>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/Assets/Scripts/Tests/Editor/UIManagerTests.cs">
+          <value>
+            <PendingDiffInfo>
+              <option name="filePath" value="$PROJECT_DIR$/Assets/Scripts/Tests/Editor/UIManagerTests.cs" />
+            </PendingDiffInfo>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/README.md">
+          <value>
+            <PendingDiffInfo>
+              <option name="filePath" value="$PROJECT_DIR$/README.md" />
+            </PendingDiffInfo>
+          </value>
+        </entry>
       </map>
     </option>
   </component>

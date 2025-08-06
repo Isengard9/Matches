@@ -16,12 +16,12 @@ public class RunnerGameCreator : EditorWindow
     private const float MIN_ROAD_LENGTH = 100f;
     private const float MAX_ROAD_LENGTH = 500f;
 
-    // Prefab alanları
+    // Prefab fields
     private GameObject collectiblePrefab;
     private GameObject obstaclePrefab;
     private GameObject finishLinePrefab;
 
-    // Seçili obje
+    // Selected object
     private InteractableObjectController selectedObject;
     private Vector2 scrollPosition;
 
@@ -38,7 +38,7 @@ public class RunnerGameCreator : EditorWindow
         GUILayout.Label("Runner Game Creator", EditorStyles.boldLabel);
         GUILayout.Space(10);
 
-        // Prefab alanı
+        // Prefab field
         runnerGamePrefab =
             EditorGUILayout.ObjectField("Runner Game Prefab", runnerGamePrefab, typeof(GameObject),
                 false) as GameObject;
@@ -119,21 +119,21 @@ public class RunnerGameCreator : EditorWindow
 
         EditorGUILayout.BeginHorizontal();
 
-        // Add Collectible - Her zaman eklenebilir
+        // Add Collectible - Can always be added
         GUI.enabled = collectiblePrefab != null;
         if (GUILayout.Button("Add Collectible"))
         {
             AddInteractableObject(InteractableTypeEnum.Collectible, collectiblePrefab);
         }
 
-        // Add Obstacle - Collectible varsa eklenebilir
+        // Add Obstacle - Can be added if collectible exists
         GUI.enabled = obstaclePrefab != null && HasCollectible();
         if (GUILayout.Button("Add Obstacle"))
         {
             AddInteractableObject(InteractableTypeEnum.Obstacle, obstaclePrefab);
         }
 
-        // Add Finish Line - Collectible varsa ve finish line yoksa eklenebilir
+        // Add Finish Line - Can be added if collectible exists and finish line doesn't exist
         GUI.enabled = finishLinePrefab != null && HasCollectible() && !HasFinishLine();
         if (GUILayout.Button("Add Finish Line"))
         {
@@ -186,7 +186,7 @@ public class RunnerGameCreator : EditorWindow
 
             Vector3 currentPos = selectedObject.transform.localPosition;
 
-            // Collectible için X ve Z, diğerleri için sadece Z
+            // X and Z for collectible, only Z for others
             if (selectedObject.Data.InteractableType == InteractableTypeEnum.Collectible)
             {
                 float newX = EditorGUILayout.FloatField("Position X", currentPos.x);
@@ -227,7 +227,7 @@ public class RunnerGameCreator : EditorWindow
                 controller = newObj.AddComponent<InteractableObjectController>();
             }
 
-            // Pozisyon hesaplama
+            // Position calculation
             float zPos = type == InteractableTypeEnum.FinishLine ? roadLength - 2 : roadLength * 0.5f;
 
             var data = new InteractableObjectData
@@ -282,7 +282,7 @@ public class RunnerGameCreator : EditorWindow
             {
                 roadController.UpdateRoadLength(roadLength);
 
-                // Finish Line pozisyonunu güncelle
+                // Update finish line position
                 var objects = roadController.InteractableParent.GetComponentsInChildren<InteractableObjectController>();
                 foreach (var obj in objects)
                 {
@@ -298,21 +298,21 @@ public class RunnerGameCreator : EditorWindow
 
     private void CreateRunnerLevel()
     {
-        // Yeni klasör adı oluştur
+        // Create new folder name
         string basePath = "Assets/Resources/Data/Level/";
         string newFolderName = GetNextAvailableFolderName(basePath);
         string destinationPath = basePath + newFolderName;
 
-        // Yeni klasör oluştur
+        // Create new folder
         if (!AssetDatabase.IsValidFolder(destinationPath))
         {
             AssetDatabase.CreateFolder(basePath.TrimEnd('/'), newFolderName);
         }
 
-        // RunnerDataSO oluştur
+        // Create RunnerDataSO
         RunnerDataSO runnerData = ScriptableObject.CreateInstance<RunnerDataSO>();
 
-        // Camera data ata
+        // Assign camera data
         string cameraAssetPath = "Assets/Resources/Config/Runner_Camera.asset";
         var cameraData = AssetDatabase.LoadAssetAtPath<CameraDataSO>(cameraAssetPath);
         if (cameraData != null)
@@ -321,10 +321,10 @@ public class RunnerGameCreator : EditorWindow
         }
         else
         {
-            Debug.LogWarning($"Camera data bulunamadı: {cameraAssetPath}");
+            Debug.LogWarning($"Camera data not found: {cameraAssetPath}");
         }
 
-        // LevelPrefab'ı ata (Orijinal prefab'ın asset yolundan)
+        // Assign LevelPrefab (from original prefab's asset path)
         if (runnerGamePrefab != null)
         {
             string prefabPath = AssetDatabase.GetAssetPath(runnerGamePrefab);
@@ -333,11 +333,11 @@ public class RunnerGameCreator : EditorWindow
         }
         else
         {
-            Debug.LogError("RunnerGamePrefab bulunamadı!");
+            Debug.LogError("RunnerGamePrefab not found!");
             return;
         }
 
-        // Road data'yı kaydet
+        // Save road data
         var roadController = instantiatedPrefab.GetComponentInChildren<RoadController>();
         if (roadController != null)
         {
@@ -346,41 +346,41 @@ public class RunnerGameCreator : EditorWindow
         }
         else
         {
-            Debug.LogError("RoadController bulunamadı!");
+            Debug.LogError("RoadController not found!");
             return;
         }
 
-        // RunnerDataSO'yu kaydet
+        // Save RunnerDataSO
         string runnerDataPath = $"{destinationPath}/RunnerData_{newFolderName}.asset";
         AssetDatabase.CreateAsset(runnerData, runnerDataPath);
 
-        // LevelDataSO oluştur
+        // Create LevelDataSO
         LevelDataSO levelData = ScriptableObject.CreateInstance<LevelDataSO>();
         levelData.LevelName = $"Runner Level {newFolderName}";
         levelData.Level = runnerData;
 
-        // LevelDataSO'yu kaydet
+        // Save LevelDataSO
         string levelDataPath = $"{destinationPath}/LevelData_{newFolderName}.asset";
         AssetDatabase.CreateAsset(levelData, levelDataPath);
 
-        // Asset database'i refresh et
+        // Refresh asset database
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();
 
-        // RunnerLevelController'a veriyi ata ve kaydet
+        // Assign data to RunnerLevelController and save
         var levelController = instantiatedPrefab.GetComponent<RunnerLevelController>();
         if (levelController != null)
         {
             levelController.LevelData = runnerData;
             levelController.SaveData();
 
-            Debug.Log($"Runner level başarıyla oluşturuldu: {destinationPath}");
+            Debug.Log($"Runner level successfully created: {destinationPath}");
             Debug.Log($"RunnerData: {runnerDataPath}");
             Debug.Log($"LevelData: {levelDataPath}");
         }
         else
         {
-            Debug.LogError("RunnerLevelController bulunamadı!");
+            Debug.LogError("RunnerLevelController not found!");
         }
     }
 

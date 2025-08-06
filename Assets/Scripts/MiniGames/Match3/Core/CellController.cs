@@ -14,14 +14,14 @@ namespace MiniGames.Match3.Core
 
         private void Awake()
         {
-            // Collider2D yoksa ekle
+            // Add Collider2D if it doesn't exist
             if (GetComponent<Collider2D>() == null)
             {
                 var collider = gameObject.AddComponent<BoxCollider2D>();
                 collider.isTrigger = true;
             }
             
-            // Animator referansını al
+            // Get Animator reference
             if (animator == null)
                 animator = GetComponent<Animator>();
         }
@@ -58,7 +58,7 @@ namespace MiniGames.Match3.Core
             return !IsWall() && !IsEmpty();
         }
         
-        // Animasyon için pozisyon değiştirme metodu
+        // Method for changing position for animation
         public void MoveTo(Vector3 targetPosition, float duration = 0.3f)
         {
             StartCoroutine(MoveCoroutine(targetPosition, duration));
@@ -80,28 +80,9 @@ namespace MiniGames.Match3.Core
             transform.position = targetPosition;
         }
         
-        public void MoveLeft()
-        {
-            
-        }
-        
-        public void MoveRight()
-        {
-            
-        }
-        
-        public void MoveUp()
-        {
-            
-        }
-        
-        public void MoveDown()
-        {
-            
-        }
-        
+              
         /// <summary>
-        /// Match animasyonu tetikler
+        /// Triggers match animation
         /// </summary>
         public void TriggerMatchAnimation()
         {
@@ -112,7 +93,7 @@ namespace MiniGames.Match3.Core
         }
         
         /// <summary>
-        /// Wrong match animasyonu tetikler
+        /// Triggers wrong match animation
         /// </summary>
         public void TriggerWrongMatchAnimation()
         {

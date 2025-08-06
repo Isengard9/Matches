@@ -22,7 +22,7 @@ namespace MiniGames.Match3.Data
         Purple,
     }
     
-    [CreateAssetMenu(fileName = "Match3Piece", menuName = "NC/Match3/Objects/Piece", order = 0)]
+    [CreateAssetMenu(fileName = "Match3Piece", menuName = "NC/Matches/Games/Match3/Piece Data", order = 0)]
     public class PieceSO : ScriptableObject
     {
         public Sprite Sprite;

@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 3390998468830985693}
   - component: {fileID: 3456819207314125766}
   m_Layer: 0
-  m_Name: TestLevel
+  m_Name: Match3Base
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

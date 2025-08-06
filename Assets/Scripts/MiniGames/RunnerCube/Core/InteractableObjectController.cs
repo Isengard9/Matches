@@ -24,7 +24,7 @@ namespace MiniGames.RunnerCube.Core
             else if (data.InteractableType == InteractableTypeEnum.Obstacle)
                 renderer.material.color = Color.red;
             else if (data.InteractableType == InteractableTypeEnum.FinishLine)
-                renderer.material.color = new Color(1, 1, 1, 0);
+                renderer.material.color = new Color(0, 0, 0, 1);
         }
 
 

@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 7873473443785443130}
   - component: {fileID: 1568896264524461772}
   m_Layer: 6
-  m_Name: InteractableController
+  m_Name: InteractableObstacle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -119,5 +119,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Data:
-    InteractableType: 0
+    InteractableType: 1
     InitialPosition: {x: 0, y: 0, z: 0}
+    InitialScale: {x: 10, y: 1, z: 1}

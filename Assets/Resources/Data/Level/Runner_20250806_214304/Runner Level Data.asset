@@ -15,6 +15,6 @@ MonoBehaviour:
   CameraData: {fileID: 11400000, guid: 9b3ac0cd12789054f88936136ebd00a5, type: 2}
   isLoaded: 1
   RoadData:
-    RoadLenght: 0
+    RoadLenght: 100
     InteractableObjects: []
   LevelPrefab: {fileID: 5282769372013158942, guid: c41b1e8a626153d4e9b1264b98690e09, type: 3}

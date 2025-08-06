@@ -11,6 +11,11 @@ namespace MiniGames.RunnerCube.Core
         public GameObject InteractableParent;
         
         private List<InteractableObjectController> interactableObjects = new ();
+        
+        public void UpdateRoadLength(float newLength)
+        {
+            transform.localScale = new Vector3(10, 1, newLength);
+        }
         public void CreateRoad()
         {
             if (RoadData == null || InteractableObjectController == null)

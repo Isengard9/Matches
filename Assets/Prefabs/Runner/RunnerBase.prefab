@@ -169,7 +169,7 @@ GameObject:
   - component: {fileID: 2955419426979843654}
   - component: {fileID: 4059665229018094051}
   m_Layer: 0
-  m_Name: RunnerGame
+  m_Name: RunnerBase
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

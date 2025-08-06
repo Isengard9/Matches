@@ -41,8 +41,8 @@ namespace MiniGames.Match3.Data
     }
 
     [Serializable]
-    [CreateAssetMenu(menuName = "NC/Match3/GridData")]
-    public class GridData : ScriptableObject
+    [CreateAssetMenu(menuName = "NC/Match3/GridDataSO")]
+    public class GridDataSO : ScriptableObject
     {
         [SerializeField] public GridSize GridSize = GridSize.Small;
         [SerializeField] private SerializableCellData serializableCells;

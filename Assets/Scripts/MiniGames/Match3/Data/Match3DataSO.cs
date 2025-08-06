@@ -16,18 +16,18 @@ namespace MiniGames.Match3.Data
         public int TargetScore = 20;
         
         
-        public Match3LevelController LevelPrefab;
+        public GameObject LevelPrefab;
         private Match3LevelController createdLevel;
         
-        public GridData GridData;
+        public GridDataSO girdDataSo;
 
-        private void OnValidate()
-        {
-            if(GridData != null)
-                return;
-            
-            GridData = CreateInstance<GridData>();
-        }
+        // private void OnValidate()
+        // {
+        //     if(girdDataSo != null)
+        //         return;
+        //     
+        //     girdDataSo = CreateInstance<GridDataSO>();
+        // }
 
         public override void Load()
         {
@@ -38,7 +38,8 @@ namespace MiniGames.Match3.Data
             
             if (LevelPrefab != null)
             {
-                createdLevel = Instantiate(LevelPrefab);
+                createdLevel = Instantiate(LevelPrefab).GetComponent<Match3LevelController>();
+                createdLevel.Data = this;
                 createdLevel.gridController.CreateGrid();
                 
                 

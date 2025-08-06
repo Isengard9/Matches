@@ -153,7 +153,10 @@ MonoBehaviour:
   RoadData:
     RoadLenght: 0
     InteractableObjects: []
-  InteractableObjectController: {fileID: 1568896264524461772, guid: 6201c7ff1fcf5bf4b8e015f46d0d8ed3, type: 3}
+  InteractableObjects:
+  - {fileID: 1568896264524461772, guid: 07e1158a59d68234db2b8a60381bb950, type: 3}
+  - {fileID: 1568896264524461772, guid: c93e62d20c02d17478fca1a596c27e27, type: 3}
+  - {fileID: 1568896264524461772, guid: e70b34151d3d81e4e950eac7ae2ff792, type: 3}
   InteractableParent: {fileID: 8703027427630365789}
 --- !u!1 &3932835975122088435
 GameObject:

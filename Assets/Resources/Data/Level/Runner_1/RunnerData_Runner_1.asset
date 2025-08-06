@@ -10,29 +10,25 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 031417c86e5e496c9a836b873c34c161, type: 3}
-  m_Name: RunnerSO
+  m_Name: RunnerData_Runner_1
   m_EditorClassIdentifier: 
   CameraData: {fileID: 11400000, guid: 9b3ac0cd12789054f88936136ebd00a5, type: 2}
-  isLoaded: 1
+  isLoaded: 0
   RoadData:
     RoadLenght: 100
     InteractableObjects:
     - InteractableType: 2
-      InitialPosition: {x: -3, y: 1, z: 6.4}
-      InitialScale: {x: 1, y: 1, z: 1}
+      InitialPosition: {x: 0, y: 1, z: 12.6}
     - InteractableType: 2
-      InitialPosition: {x: -3, y: 1, z: 10.5}
-      InitialScale: {x: 1, y: 1, z: 1}
+      InitialPosition: {x: 0, y: 1, z: 18.4}
     - InteractableType: 2
-      InitialPosition: {x: -3, y: 1, z: 15}
-      InitialScale: {x: 1, y: 1, z: 1}
+      InitialPosition: {x: 0, y: 1, z: 25.2}
     - InteractableType: 1
-      InitialPosition: {x: 0, y: 1, z: 21}
-      InitialScale: {x: 10, y: 1, z: 1}
+      InitialPosition: {x: 0, y: 1, z: 33.5}
     - InteractableType: 1
-      InitialPosition: {x: 0, y: 1, z: 25}
-      InitialScale: {x: 10, y: 1, z: 1}
+      InitialPosition: {x: 0, y: 1, z: 41.7}
+    - InteractableType: 1
+      InitialPosition: {x: 0, y: 1, z: 50}
     - InteractableType: 3
-      InitialPosition: {x: 0, y: 0.5, z: 87}
-      InitialScale: {x: 10, y: 1, z: 1}
-  LevelPrefab: {fileID: 5282769372013158942, guid: c41b1e8a626153d4e9b1264b98690e09, type: 3}
+      InitialPosition: {x: 0, y: 1, z: 74}
+  LevelPrefab: {fileID: 3932835975122088435, guid: c41b1e8a626153d4e9b1264b98690e09, type: 3}

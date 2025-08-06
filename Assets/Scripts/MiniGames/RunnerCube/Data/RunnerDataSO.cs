@@ -8,7 +8,7 @@ namespace MiniGames.RunnerCube.Data
     public class RunnerDataSO : Level
     {
         public RoadData RoadData;
-        public RunnerLevelController LevelPrefab;
+        public GameObject LevelPrefab;
         private RunnerLevelController createdLevel;
         
         public override void Load()
@@ -17,7 +17,7 @@ namespace MiniGames.RunnerCube.Data
             
             if (LevelPrefab != null)
             {
-                createdLevel = Instantiate(LevelPrefab);
+                createdLevel = Instantiate(LevelPrefab).GetComponent<RunnerLevelController>();
                 createdLevel.SetData(this);
             }
             else

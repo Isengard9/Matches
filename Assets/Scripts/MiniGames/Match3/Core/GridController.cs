@@ -54,13 +54,13 @@ namespace MiniGames.Match3.Core
         public void CreateGrid()
         {
             if (levelController == null || levelController.Match3Data == null ||
-                levelController.Match3Data.GridData == null)
+                levelController.Match3Data.girdDataSo == null)
             {
-                Debug.LogError("Match3Data or GridData is not set.");
+                Debug.LogError("Match3Data or GirdDataSO is not set.");
                 return;
             }
 
-            var gridData = levelController.Match3Data.GridData;
+            var gridData = levelController.Match3Data.girdDataSo;
             int gridSize = (int)gridData.GridSize;
 
             // Initialize the cells array
@@ -69,10 +69,10 @@ namespace MiniGames.Match3.Core
             // Clear existing grid (Editor safe)
             ClearExistingGrid();
 
-            // Initialize cells from GridData
+            // Initialize cells from GirdDataSO
             if (gridData.Cells == null)
             {
-                Debug.LogError("GridData.Cells is not initialized.");
+                Debug.LogError("GirdDataSO.Cells is not initialized.");
                 return;
             }
 
@@ -90,7 +90,7 @@ namespace MiniGames.Match3.Core
                     // Grid position: x = col, y = row (0,0 = top left, 4,4 = bottom right)
                     cellController.GridPosition = new Vector2Int(col, row);
 
-                    // Get CellData from GridData and set it
+                    // Get CellData from GirdDataSO and set it
                     var cellData = gridData.Cells[row, col];
                     cellController.SetData(cellData);
 

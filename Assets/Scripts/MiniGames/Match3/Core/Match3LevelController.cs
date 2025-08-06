@@ -11,15 +11,14 @@ namespace MiniGames.Match3.Core
     [RequireComponent(typeof(GridController))]
     public class Match3LevelController : LevelController
     {
-        public Match3DataSO data;
         public Match3DataSO Match3Data => Data as Match3DataSO;
         public GridController gridController;
 
 
-        private void Awake()
-        {
-            Data = data;
-        }
+        // private void Awake()
+        // {
+        //     Data = data;
+        // }
 
         private void Start()
         {

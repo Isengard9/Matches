@@ -15,6 +15,5 @@ namespace MiniGames.RunnerCube.Data
     {
         public InteractableTypeEnum InteractableType;
         public Vector3 InitialPosition;
-        public Vector3 InitialScale;
     }
 }

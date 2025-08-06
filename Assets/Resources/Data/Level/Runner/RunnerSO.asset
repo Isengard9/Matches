@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 031417c86e5e496c9a836b873c34c161, type: 3}
-  m_Name: Runner Level Data
+  m_Name: RunnerSO
   m_EditorClassIdentifier: 
   CameraData: {fileID: 11400000, guid: 9b3ac0cd12789054f88936136ebd00a5, type: 2}
   isLoaded: 1
   RoadData:
-    RoadLenght: 100
+    RoadLenght: 0
     InteractableObjects: []
   LevelPrefab: {fileID: 5282769372013158942, guid: c41b1e8a626153d4e9b1264b98690e09, type: 3}

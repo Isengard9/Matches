@@ -206,7 +206,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RoadController: {fileID: 3738030479866592902}
-  LevelData: {fileID: 11400000, guid: d06a33b543aba724b94d5f54e10bdfd0, type: 2}
+  LevelData: {fileID: 0}
 --- !u!114 &6790788357153083605
 MonoBehaviour:
   m_ObjectHideFlags: 0

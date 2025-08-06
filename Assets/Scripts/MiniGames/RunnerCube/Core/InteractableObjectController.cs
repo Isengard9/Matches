@@ -11,8 +11,9 @@ namespace MiniGames.RunnerCube.Core
         {
             Data = data;
             transform.position = data.InitialPosition;
-            transform.localScale = data.InitialScale;
 
+            if(!Application.isPlaying)
+                return;
             var renderer = GetComponent<Renderer>();
             if (renderer == null)
             {
@@ -34,7 +35,6 @@ namespace MiniGames.RunnerCube.Core
             {
                 InteractableType = Data.InteractableType,
                 InitialPosition = transform.localPosition,
-                InitialScale = transform.localScale
             };
         }
     }

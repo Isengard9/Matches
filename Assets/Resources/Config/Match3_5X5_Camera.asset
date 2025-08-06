@@ -9,8 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d8fd7de789ef483bac539f1ff196adb2, type: 3}
-  m_Name: TestRunner
+  m_Script: {fileID: 11500000, guid: 5112349a9b6e483b9939ad079f8040a3, type: 3}
+  m_Name: Match3_5X5_Camera
   m_EditorClassIdentifier: 
-  LevelName: 
-  Level: {fileID: 11400000, guid: d06a33b543aba724b94d5f54e10bdfd0, type: 2}
+  originalPosition: {x: 0.3, y: -0.3, z: -10}
+  originalRotation: {x: -0, y: 0, z: 0}
+  originalScale: {x: 1, y: 1, z: 1}
+  UseOrtographic: 1

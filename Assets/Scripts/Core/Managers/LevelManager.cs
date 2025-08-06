@@ -68,7 +68,7 @@ namespace Core.Managers
             }
             else
             {
-                currentLevelIndex--;
+                currentLevelIndex = 0;
                 Debug.Log("All levels completed.");
             }
 

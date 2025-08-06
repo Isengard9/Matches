@@ -12,20 +12,78 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 031417c86e5e496c9a836b873c34c161, type: 3}
   m_Name: Runner Level Data
   m_EditorClassIdentifier: 
+  CameraData: {fileID: 11400000, guid: 9b3ac0cd12789054f88936136ebd00a5, type: 2}
   isLoaded: 1
   RoadData:
     RoadLenght: 500
     InteractableObjects:
     - InteractableType: 2
-      InitialPosition: {x: -2.5, y: 1, z: 20}
+      InitialPosition: {x: -3.937127, y: 0.9818292, z: 8.690936}
+      InitialScale: {x: 1, y: 1, z: 1}
     - InteractableType: 2
-      InitialPosition: {x: -2.5, y: 1, z: 25}
+      InitialPosition: {x: -3.937127, y: 0.9818292, z: 10.690936}
+      InitialScale: {x: 1, y: 1, z: 1}
     - InteractableType: 2
-      InitialPosition: {x: -2.5, y: 1, z: 30}
+      InitialPosition: {x: -3.937127, y: 0.9818292, z: 12.690936}
+      InitialScale: {x: 1, y: 1, z: 1}
     - InteractableType: 2
-      InitialPosition: {x: -2.5, y: 1, z: 35}
+      InitialPosition: {x: -3.937127, y: 0.9818292, z: 14.940936}
+      InitialScale: {x: 1, y: 1, z: 1}
     - InteractableType: 2
-      InitialPosition: {x: -2.5, y: 1, z: 40}
+      InitialPosition: {x: -3.937127, y: 0.9818292, z: 17.190937}
+      InitialScale: {x: 1, y: 1, z: 1}
+    - InteractableType: 2
+      InitialPosition: {x: -2.187127, y: 0.9818292, z: 18.690937}
+      InitialScale: {x: 1, y: 1, z: 1}
+    - InteractableType: 2
+      InitialPosition: {x: -0.4371271, y: 0.9818292, z: 20.190937}
+      InitialScale: {x: 1, y: 1, z: 1}
+    - InteractableType: 2
+      InitialPosition: {x: -0.4371271, y: 0.9818292, z: 38.940937}
+      InitialScale: {x: 1, y: 1, z: 1}
+    - InteractableType: 2
+      InitialPosition: {x: -0.4371271, y: 0.9818292, z: 41.940937}
+      InitialScale: {x: 1, y: 1, z: 1}
+    - InteractableType: 2
+      InitialPosition: {x: -0.4371271, y: 0.9818292, z: 44.690937}
+      InitialScale: {x: 1, y: 1, z: 1}
+    - InteractableType: 2
+      InitialPosition: {x: -0.4371271, y: 0.9818292, z: 46.940937}
+      InitialScale: {x: 1, y: 1, z: 1}
+    - InteractableType: 2
+      InitialPosition: {x: -0.4371271, y: 0.9818292, z: 46.940937}
+      InitialScale: {x: 1, y: 1, z: 1}
+    - InteractableType: 2
+      InitialPosition: {x: 1.3128729, y: 0.9818292, z: 21.940937}
+      InitialScale: {x: 1, y: 1, z: 1}
+    - InteractableType: 2
+      InitialPosition: {x: 3.312873, y: 0.9818292, z: 23.940937}
+      InitialScale: {x: 1, y: 1, z: 1}
+    - InteractableType: 1
+      InitialPosition: {x: 0, y: 0.9818292, z: 27.940937}
+      InitialScale: {x: 10, y: 1, z: 1}
+    - InteractableType: 1
+      InitialPosition: {x: 0, y: 0.9818292, z: 30.190937}
+      InitialScale: {x: 10, y: 1, z: 1}
+    - InteractableType: 1
+      InitialPosition: {x: 0, y: 0.9818292, z: 32.440937}
+      InitialScale: {x: 10, y: 1, z: 1}
+    - InteractableType: 1
+      InitialPosition: {x: 0, y: 0.9818292, z: 34.940937}
+      InitialScale: {x: 10, y: 1, z: 1}
+    - InteractableType: 1
+      InitialPosition: {x: 0, y: 0.9818292, z: 49.690937}
+      InitialScale: {x: 10, y: 1, z: 1}
+    - InteractableType: 1
+      InitialPosition: {x: 0, y: 0.9818292, z: 51.940937}
+      InitialScale: {x: 10, y: 1, z: 1}
+    - InteractableType: 1
+      InitialPosition: {x: 0, y: 0.9818292, z: 54.690937}
+      InitialScale: {x: 10, y: 1, z: 1}
+    - InteractableType: 1
+      InitialPosition: {x: 0, y: 0.9818292, z: 57.190937}
+      InitialScale: {x: 10, y: 1, z: 1}
     - InteractableType: 3
-      InitialPosition: {x: 0, y: 1, z: 70}
+      InitialPosition: {x: 0, y: 0.5, z: 70.94093}
+      InitialScale: {x: 10, y: 0.01839, z: 1}
   LevelPrefab: {fileID: 5282769372013158942, guid: c41b1e8a626153d4e9b1264b98690e09, type: 3}

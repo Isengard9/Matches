@@ -255,10 +255,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerObject: {fileID: 6657587443144778690}
-  forwardSpeed: 5
+  forwardSpeed: 10
   slowDownDuration: 2
-  scaleUpAmount: 0.3
-  scaleDownAmount: 0.2
+  scaleUpAmount: 1
+  scaleDownAmount: 1
   scaleAnimationDuration: 0.5
   minimumScale: 1
 --- !u!1 &8703027427630365789
@@ -306,7 +306,7 @@ GameObject:
   - component: {fileID: 8539605262978157898}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

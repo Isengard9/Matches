@@ -15,6 +15,7 @@ namespace MiniGames.Match3.Data
         public int currentScore;
         public int TargetScore = 20;
         
+        
         public Match3LevelController LevelPrefab;
         private Match3LevelController createdLevel;
         
@@ -39,6 +40,8 @@ namespace MiniGames.Match3.Data
             {
                 createdLevel = Instantiate(LevelPrefab);
                 createdLevel.gridController.CreateGrid();
+                
+                
             }
             else
             {
@@ -61,7 +64,7 @@ namespace MiniGames.Match3.Data
             }
         }
 
-        private void OnDestroy()
+        private void OnDisable()
         {
             Unload();
         }

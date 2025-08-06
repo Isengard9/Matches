@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ffa6f273c8741fdb16768d57bd9345e, type: 3}
   m_Name: TestLevel
   m_EditorClassIdentifier: 
-  isLoaded: 1
+  CameraData: {fileID: 11400000, guid: d61229707e3de3b4d9e06a08ad3b8e1e, type: 2}
+  isLoaded: 0
   scoreData: {fileID: 11400000, guid: 9d21fdd1b8e22714585218640f5a1b51, type: 2}
   maxSwapAttempts: 12
   currentSwapAttempts: 0

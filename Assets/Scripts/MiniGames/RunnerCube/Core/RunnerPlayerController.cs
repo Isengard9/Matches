@@ -9,7 +9,7 @@ namespace MiniGames.RunnerCube.Core
     public class RunnerPlayerController : MonoBehaviour
     {
         [Header("Movement Settings")]
-        [SerializeField] private Transform playerObject;
+        public Transform playerObject;
         [SerializeField] private float forwardSpeed = 5f;
         [SerializeField] private float slowDownDuration = 2f;
         

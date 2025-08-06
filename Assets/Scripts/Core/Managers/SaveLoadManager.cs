@@ -1,6 +1,7 @@
 using Core.Data;
 using System.IO;
 using Constants;
+using Newtonsoft.Json;
 using UnityEngine;
 
 namespace Core.Managers
@@ -39,7 +40,7 @@ namespace Core.Managers
             
             try
             {
-                string jsonData = JsonUtility.ToJson(data, true);
+                string jsonData = JsonConvert.SerializeObject(data, Formatting.Indented);
                 File.WriteAllText(filePath, jsonData);
                 Debug.Log($"Data saved: {filePath}");
             }
@@ -63,7 +64,7 @@ namespace Core.Managers
             try
             {
                 string jsonData = File.ReadAllText(filePath);
-                T data = JsonUtility.FromJson<T>(jsonData);
+                T data = JsonConvert.DeserializeObject<T>(jsonData);
                 Debug.Log($"Data loaded: {filePath}");
                 return data;
             }

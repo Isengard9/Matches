@@ -1,5 +1,4 @@
 using Core;
-using MiniGames.Data;
 using MiniGames.RunnerCube.Core;
 using UnityEngine;
 
@@ -9,7 +8,6 @@ namespace MiniGames.RunnerCube.Data
     public class RunnerDataSO : Level
     {
         public RoadData RoadData;
-        public CameraDataSO CameraData;
         public RunnerLevelController LevelPrefab;
         private RunnerLevelController createdLevel;
         

@@ -119,6 +119,19 @@ The framework is designed to support different mini-games.
 
 -   **Game Progression:** The Runner game progresses by sequentially spawning track segments. The `LevelManager` loads the level data, which defines the order and type of segments to be used. Player movement and game speed are managed by a dedicated `PlayerController` and `GameManager` for the runner mode.
 
+## Project Structure
+
+The `Assets` folder is organized to maintain a clean and scalable project structure.
+
+-   **/Scripts**: Contains all C# source code, organized by feature or system (e.g., `Core`, `MiniGames`, `Editor`).
+-   **/Scenes**: Contains all Unity scenes, including the main game scene and test scenes.
+-   **/Prefabs**: Contains all reusable game objects (prefabs), such as UI panels, game pieces, and level segments.
+-   **/Data**: Holds all `ScriptableObject` assets that store game data, primarily level configurations.
+-   **/UI**: Contains UI-specific assets like sprites, fonts, and animations used in the user interface.
+-   **/Editor**: Includes scripts that are only used within the Unity Editor, such as custom inspectors and level creation tools.
+-   **/Resources**: Contains assets that need to be loaded dynamically at runtime via the `Resources.Load()` API, such as the `LevelsContainer`.
+-   **/Materials**: Stores all materials used for rendering 3D objects in the game.
+
 ## Third-Party Assets
 
 - **Free Casual Buttons Pack**: This project includes the [Free Casual Buttons Pack](https://assetstore.unity.com/packages/2d/gui/free-casual-buttons-pack-307406) from the Unity Asset Store to provide placeholder UI elements for visualization purposes.

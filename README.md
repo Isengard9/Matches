@@ -7,11 +7,17 @@ Welcome to the official repository for Project Matches! This document provides a
 - [Core Architecture](#core-architecture)
   - [Manager System](#manager-system)
   - [Event System](#event-system)
+  - [Level System](#level-system)
+  - [UI System](#ui-system)
+  - [Save/Load System](#saveload-system)
 - [Level Creation Workflow](#level-creation-workflow)
 - [Mini-Game Mechanics](#mini-game-mechanics)
   - [Match-3](#match-3)
   - [Runner](#runner)
+- [Project Structure](#project-structure)
+- [Third-Party Assets](#third-party-assets)
 - [Getting Started](#getting-started)
+- [Known Issues and Future Improvements](#known-issues-and-future-improvements)
 
 ## Project Overview
 
@@ -25,127 +31,244 @@ The project is built upon a robust and modular architecture to ensure scalabilit
 
 The core of the framework is the **Manager System**. A central `ManagerContainer` is responsible for initializing and providing access to all other managers. This ensures a clean separation of concerns and a single point of access for core functionalities.
 
-The main managers are:
-- **`EventManager`**: Handles the communication between different parts of the game using a publish-subscribe pattern.
-- **`LevelManager`**: Manages the lifecycle of levels, including loading, starting, and finishing them.
-- **`UIManager`**: Controls the user interface, including screens, pop-ups, and HUD elements.
-- **`SaveLoadManager`**: Manages game data persistence, saving and loading player progress.
+#### Key Managers:
 
-### Level System
+**`EventManager`**: 
+- Handles communication between different parts of the game using a publish-subscribe pattern
+- Provides decoupled event-driven architecture
+- Manages event subscriptions and publications
 
-The `LevelManager` orchestrates the entire level flow, from loading data to managing player progression.
+**`LevelManager`**: 
+- Manages the complete lifecycle of levels
+- Loads level data from `LevelsContainerSO`
+- Handles level progression and state management
+- Publishes critical level events
 
--   **Level Container**: It loads all level data from a `LevelsContainerSO` asset found in the `Resources` folder. This asset acts as a central repository for all levels in the game.
--   **Lifecycle Management**: It handles the complete lifecycle of a level. It interacts with the `SaveLoadManager` to get the `currentLevelIndex` and load the appropriate level. It provides methods like `StartLevel`, `EndLevel`, and `LoadNextLevel` to control the game flow.
--   **Event Publishing**: It is a key event publisher that informs other systems about the level's state:
-    -   `LevelLoadedEvent`: Published after a level's data is loaded. The `UIManager` listens to this to show the start panel.
-    -   `LevelStartedEvent`: Published when the gameplay for the current level officially begins.
-    -   `LevelEndedEvent`: Published when the level is successfully completed.
-    -   `LevelFailedEvent`: Published when the player fails the level.
-    -   `LevelUnloadedEvent`: Published when a level's resources are unloaded before loading the next one.
+**`UIManager`**: 
+- Controls all user interface elements
+- Manages panel transitions and UI states
+- Responds to game events automatically
+- Handles state-driven UI flow
 
-### UI System
-
-The `UIManager` controls the entire UI flow of the game. It operates as a state machine, managing different UI panels based on the current game state.
-
--   **Panel Controllers:** The manager holds references to various panel controllers, such as `StartPanelController`, `EndPanelController`, and game-specific panels (e.g., `Match3InGamePanelController`).
--   **State-Driven:** It uses a `UIState` enum (e.g., `StartPanel`, `EndPanel`, `InGame`) to determine which panel should be active.
--   **Event-Driven:** The `UIManager` subscribes to core game events from the `EventManager` (`LevelLoadedEvent`, `LevelEndedEvent`, `LevelFailedEvent`). When an event is published, the `UIManager` automatically transitions to the appropriate UI state, showing and hiding panels as needed. For example, when a `LevelLoadedEvent` is received, it shows the start panel. When a `LevelEndedEvent` is received, it displays the end-game panel.
-
-### Save/Load System
-
-The `SaveLoadManager` is responsible for all data persistence in the game. It automatically loads user data when the game starts and provides methods to save it.
-
--   **Data Model:** Player progress is stored in the `UserSaveData` class.
--   **Storage:** The data is serialized into a JSON file and stored in the device's persistent data path (`Application.persistentDataPath`). This ensures that player data is not lost between sessions.
+**`SaveLoadManager`**: 
+- Manages all game data persistence
+- Handles automatic save/load operations
+- Stores data in JSON format in persistent data path
+- Manages `UserSaveData` serialization
 
 ### Event System
 
-The `EventManager` allows for decoupled communication between different systems.
+The `EventManager` enables decoupled communication between different systems using a publish-subscribe pattern.
 
-**Subscribing to an Event:**
+#### Subscribing to Events:
 
-To listen for an event, you need to subscribe to it using its type. The `EventManager` will call your provided method whenever the event is published.
+To listen for an event, subscribe using the event type:
 
 ```csharp
-// Example of subscribing to a 'GameStartEvent'
 private void OnEnable()
 {
-    ManagerContainer.Instance.GetManager<EventManager>().Subscribe<GameStartEvent>(OnGameStarted);
+    ManagerContainer.Instance.GetManager<EventManager>().Subscribe<LevelLoadedEvent>(OnLevelLoaded);
 }
 
 private void OnDisable()
 {
-    ManagerContainer.Instance.GetManager<EventManager>().Unsubscribe<GameStartEvent>(OnGameStarted);
+    ManagerContainer.Instance.GetManager<EventManager>().Unsubscribe<LevelLoadedEvent>(OnLevelLoaded);
 }
 
-private void OnGameStarted(GameStartEvent gameEvent)
+private void OnLevelLoaded(LevelLoadedEvent levelEvent)
 {
-    // Handle the event
-    Debug.Log("Game has started!");
+    Debug.Log($"Level {levelEvent.LevelIndex} loaded!");
 }
 ```
 
-**Publishing an Event:**
+#### Publishing Events:
 
-To publish an event, simply create an instance of your event class and pass it to the `Publish` method.
+To publish an event, create an instance and pass it to the `Publish` method:
 
 ```csharp
-// Example of publishing a 'GameStartEvent'
-var gameStartEvent = new GameStartEvent();
-ManagerContainer.Instance.GetManager<EventManager>().Publish(gameStartEvent);
+var levelEndEvent = new LevelEndedEvent { LevelIndex = currentLevel, Score = playerScore };
+ManagerContainer.Instance.GetManager<EventManager>().Publish(levelEndEvent);
 ```
+
+### Level System
+
+The `LevelManager` orchestrates the entire level flow and is the central hub for level management.
+
+#### Key Features:
+- **Level Container Integration**: Loads all level data from `LevelsContainerSO` in Resources folder
+- **Index-based Level Loading**: Finds and loads levels by their index in the container
+- **Complete Lifecycle Management**: Handles `StartLevel`, `EndLevel`, `LoadNextLevel` operations
+- **Progress Integration**: Works with `SaveLoadManager` to track `currentLevelIndex`
+
+#### Published Events:
+- `LevelLoadedEvent`: Published after level data is loaded
+- `LevelStartedEvent`: Published when gameplay officially begins
+- `LevelEndedEvent`: Published on successful level completion
+- `LevelFailedEvent`: Published when player fails the level
+- `LevelUnloadedEvent`: Published when level resources are unloaded
+
+### UI System
+
+The `UIManager` operates as a state machine, managing different UI panels based on game state.
+
+#### Architecture:
+- **Panel Controllers**: Manages `StartPanelController`, `EndPanelController`, `Match3InGamePanelController`, etc.
+- **State-Driven Flow**: Uses `UIState` enum to determine active panels
+- **Event-Responsive**: Automatically transitions UI based on game events
+- **Centralized Control**: Single point of control for all UI elements
+
+#### UI Flow Examples:
+- `LevelLoadedEvent` → Show Start Panel
+- `LevelStartedEvent` → Show In-Game Panel
+- `LevelEndedEvent` → Show Victory Panel
+- `LevelFailedEvent` → Show Defeat Panel
+
+### Save/Load System
+
+The `SaveLoadManager` handles all data persistence with automatic save/load capabilities.
+
+#### Features:
+- **Automatic Loading**: Loads user data on game start
+- **JSON Serialization**: Stores data in readable JSON format
+- **Persistent Storage**: Uses `Application.persistentDataPath` for cross-session persistence
+- **Data Model**: Uses `UserSaveData` class for structured data storage
 
 ## Level Creation Workflow
 
-Levels are created using custom Editor windows, which streamline the design process.
+Levels are created using custom Editor windows that streamline the design process.
 
-1.  **Open the Level Editor:** Navigate to `Matches > Match3 Level Creator` or `Matches > Runner Level Creator` in the Unity menu, depending on the desired game type.
-2.  **Design the Level:** Use the editor's interface to define the level's properties, such as the grid layout for a Match-3 game or the track segments for a Runner game.
-3.  **Save the Level:** The editor will serialize the level data into a `ScriptableObject` asset.
-4.  **Add to Level Container:** To make the level accessible in the game, you must add the newly created level asset to the `LevelContainer` `ScriptableObject`. This container holds a list of all available levels. The `LevelManager` uses this container to load levels by their index.
+### Step-by-Step Process:
+
+1. **Open Level Editor**:
+   - For Match-3: `Matches > Match3 Level Creator`
+   - For Runner: `Matches > Runner Level Creator`
+
+2. **Design Your Level**:
+   - Configure grid layout (Match-3)
+   - Set track segments (Runner)
+   - Define level-specific properties
+   - Set difficulty parameters
+
+3. **Save the Level**:
+   - Editor serializes data into `ScriptableObject` asset
+   - Asset is saved in `Assets/Data` folder
+   - Level becomes a reusable asset
+
+4. **Add to Level Container**:
+   - Open `LevelsContainerSO` in Resources folder
+   - Add your new level asset to the levels list
+   - Level becomes accessible via index
+   - `LevelManager` can now load the level
+
+### Important Notes:
+- Levels are loaded by index from the container
+- Missing levels will cause silent failures (see Known Issues)
+- Level data is loaded at runtime via `Resources.Load()`
 
 ## Mini-Game Mechanics
 
-The framework is designed to support different mini-games.
+The framework supports multiple mini-game types with distinct mechanics.
 
 ### Match-3
 
--   **Grid System:** The Match-3 game uses a grid system defined in the level data. Each cell in the grid can contain a game piece. The `GridManager` (or a similar class) is responsible for managing the state of the grid.
--   **Input Handling:** Input is typically handled via the `InputManager`, which detects player swipes or clicks on the grid. These inputs are then translated into game actions, like swapping pieces.
--   **Matching Logic:** After a player's move, the `GridManager` scans the grid for horizontal and vertical matches of three or more identical pieces. When a match is identified, the pieces are removed from the grid. The pieces above then fall down to fill the empty spaces, which can potentially create new matches (cascades). This process repeats until no new matches are formed.
+#### Game Pieces
 
-### Runner
+The Match-3 game features various piece types with special abilities:
 
--   **Game Progression:** The Runner game progresses by sequentially spawning track segments. The `LevelManager` loads the level data, which defines the order and type of segments to be used. Player movement and game speed are managed by a dedicated `PlayerController` and `GameManager` for the runner mode.
+| Piece Type | Visual | Description |
+|------------|--------|-------------|
+| **Default Piece** | ![Default](DocImages/default.png) | Standard game piece that can be matched with others of the same type |
+| **Bomb Piece** | ![Bomb](DocImages/bomb.png) | Explodes and destroys surrounding pieces in a radius |
+| **Row Destroyer** | ![Row](DocImages/row.png) | Destroys all pieces in the same horizontal row |
+| **Column Destroyer** | ![Column](DocImages/column.png) | Destroys all pieces in the same vertical column |
+
+#### Core Systems:
+
+**Grid System**:
+- Grid layout defined in level data
+- `GridManager` handles grid state management
+
+**Input Handling**:
+- `InputManager` detects player interactions
+- Supports swipe gestures
+- Translates input into game actions (piece swapping)
+- Validates legal moves before execution
+
+**Matching Logic**:
+- Scans for horizontal and vertical matches (3+ pieces)
+- Removes matched pieces from grid
+- Supports cascade matching for chain reactions
+- Continues until no new matches are possible
 
 ## Project Structure
 
-The `Assets` folder is organized to maintain a clean and scalable project structure.
+The `Assets` folder maintains a clean and scalable structure:
 
--   **/Scripts**: Contains all C# source code, organized by feature or system (e.g., `Core`, `MiniGames`, `Editor`).
--   **/Scenes**: Contains all Unity scenes, including the main game scene and test scenes.
--   **/Prefabs**: Contains all reusable game objects (prefabs), such as UI panels, game pieces, and level segments.
--   **/Data**: Holds all `ScriptableObject` assets that store game data, primarily level configurations.
--   **/UI**: Contains UI-specific assets like sprites, fonts, and animations used in the user interface.
--   **/Editor**: Includes scripts that are only used within the Unity Editor, such as custom inspectors and level creation tools.
--   **/Resources**: Contains assets that need to be loaded dynamically at runtime via the `Resources.Load()` API, such as the `LevelsContainer`.
--   **/Materials**: Stores all materials used for rendering 3D objects in the game.
+- **`/Scripts`**: All C# source code, organized by system
+  - `/Core`: Manager classes and core architecture
+  - `/MiniGames`: Game-specific logic (Match3, Runner)
+  - `/Editor`: Unity Editor extensions and tools
+  
+- **`/Scenes`**: Unity scenes for different game states
+- **`/Prefabs`**: Reusable game objects and UI elements
+- **`/UI`**: UI sprites, fonts, and interface assets
+- **`/Editor`**: Editor-only scripts and tools
+- **`/Resources/Level`**: Contains `LevelsContainerSO` for level management and level datas
+- **`/Resources/Match3Objects`**: ScriptableObjects for Match-3 game pieces
+- **`/Materials`**: 3D rendering materials and shaders
 
 ## Third-Party Assets
 
-- **Free Casual Buttons Pack**: This project includes the [Free Casual Buttons Pack](https://assetstore.unity.com/packages/2d/gui/free-casual-buttons-pack-307406) from the Unity Asset Store to provide placeholder UI elements for visualization purposes.
+- **[Free Casual Buttons Pack](https://assetstore.unity.com/packages/2d/gui/free-casual-buttons-pack-307406)**: Provides polished UI button elements for better visual presentation
 
 ## Getting Started
 
-1.  Clone the repository to your local machine.
-2.  Open the project in Unity Hub.
-3.  The main scene (e.g., `MainMenu` or `Core`) should be located in the `Assets/Scenes` folder. Open it to get started.
-4.  Press Play in the Unity Editor to run the game.
+1. **Clone Repository**: Download the project to your local machine
+2. **Open in Unity**: Import project via Unity Hub
+3. **Main Scene**: Navigate to `Assets/Scenes/MainGame` and open the main game scene
+4. **Run Game**: Press Play in Unity Editor to start testing
+5. **Create Levels**: Use the custom editor tools to design new levels
+6. **Test Gameplay**: Verify your levels work correctly in both game modes
+
+## Level Create Demonstrations
+
+### Match3 Level Creation Process
+Watch how to create new levels using the custom editor tools:
+
+![Level Creation](DocImages/Match3LevelCreate.gif)
+
+*Step-by-step level creation using Match3 Level Creator*
+
+### Runner Level Creation Process
+Watch how to create new levels using the custom editor tools:
+
+![Level Creation](DocImages/RunnerLevelCreate.gif)
+
+*Step-by-step level creation using Match3 Level Creator*
 
 ## Known Issues and Future Improvements
 
--   **Empty Level Container:** The system currently does not gracefully handle cases where the `LevelsContainer` is empty. It fails silently without providing a clear error or a fallback mechanism.
--   **Rendering Issues in Runner Game:** The project was initially configured for a 2D rendering pipeline. As a result, the 3D Runner mini-game has some lighting and material rendering artifacts that need to be addressed by adjusting the render pipeline settings.
--   **Lack of Unit Tests:** The project currently lacks unit tests. While the architecture is modular, some components are tightly coupled with Unity's lifecycle, making standard unit testing challenging. Future work could involve refactoring critical parts for better testability.
--   **Animation System:** Animations are primarily handled using Coroutines. Migrating to a dedicated tweening library like **DoTween** could result in cleaner, more performant, and more maintainable animation code.
+### Current Limitations:
+
+**Empty Level Container**: 
+- No graceful handling when `LevelsContainer` is empty
+- Fails silently without error messages
+- No automatic fallback or default level generation
+
+**2D to 3D Rendering Issues**:
+- Project initially configured for 2D pipeline
+- Runner game (3D) has lighting artifacts
+- Material rendering not optimized for 3D content
+- Requires render pipeline adjustment
+
+**Testing Infrastructure**:
+- No unit test coverage
+- Architecture is modular but Unity-coupled
+- Some components difficult to test in isolation
+- Would benefit from dependency injection for testability
+
+**Animation System**:
+- Currently uses Coroutines for animations
+- Could be improved with **DoTween** package
+- Would provide better performance and cleaner code
+- More maintainable animation sequences

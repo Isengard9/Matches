@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 031417c86e5e496c9a836b873c34c161, type: 3}
+  m_Name: RunnerData_Runner_3
+  m_EditorClassIdentifier: 
+  CameraData: {fileID: 11400000, guid: 9b3ac0cd12789054f88936136ebd00a5, type: 2}
+  isLoaded: 0
+  RoadData:
+    RoadLenght: 186
+    InteractableObjects:
+    - InteractableType: 2
+      InitialPosition: {x: 1.66, y: 1, z: 14}
+    - InteractableType: 1
+      InitialPosition: {x: 0, y: 1, z: 27}
+    - InteractableType: 3
+      InitialPosition: {x: 0, y: 1, z: 156}
+    - InteractableType: 2
+      InitialPosition: {x: -0.95, y: 1, z: 37}
+    - InteractableType: 1
+      InitialPosition: {x: 0, y: 1, z: 50}
+    - InteractableType: 2
+      InitialPosition: {x: 0, y: 1, z: 65}
+    - InteractableType: 2
+      InitialPosition: {x: 0, y: 1, z: 73}
+    - InteractableType: 2
+      InitialPosition: {x: 0, y: 1, z: 82}
+  LevelPrefab: {fileID: 3932835975122088435, guid: c41b1e8a626153d4e9b1264b98690e09, type: 3}

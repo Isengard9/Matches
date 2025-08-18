@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ffa6f273c8741fdb16768d57bd9345e, type: 3}
+  m_Name: Match3_4_Data
+  m_EditorClassIdentifier: 
+  CameraData: {fileID: 0}
+  isLoaded: 0
+  scoreData: {fileID: 11400000, guid: 8326822734b36604eb70e10aa92f6b48, type: 2}
+  maxSwapAttempts: 12
+  currentSwapAttempts: 0
+  currentScore: 0
+  TargetScore: 25
+  LevelPrefab: {fileID: 2118862053609170034, guid: 74fb64fcfcd56c04aa053ffd1a82e3ae, type: 3}
+  girdDataSo: {fileID: 11400000, guid: 6152f686a1a7315438dae38fee640490, type: 2}
